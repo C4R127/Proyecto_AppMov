@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    
+    <!-- Plato principal -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M24,8 C32,8 38,14 38,22 C38,30 32,36 24,36 C16,36 10,30 10,22 C10,14 16,8 24,8 Z" />
+    
+    <!-- Borde del plato -->
+    <path
+        android:strokeColor="#BDBDBD"
+        android:strokeWidth="1.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M24,8 C32,8 38,14 38,22 C38,30 32,36 24,36 C16,36 10,30 10,22 C10,14 16,8 24,8 Z" />
+    
+    <!-- Comida en el plato (círculo pequeño) -->
+    <path
+        android:fillColor="#FF7043"
+        android:pathData="M24,18 C26,18 28,20 28,22 C28,24 26,26 24,26 C22,26 20,24 20,22 C20,20 22,18 24,18 Z" />
+    
+    <!-- Tenedor (izquierda) -->
+    <path
+        android:strokeColor="#757575"
+        android:strokeWidth="1.5"
+        android:pathData="M14,38 L14,42"/>
+    <path
+        android:strokeColor="#757575"
+        android:strokeWidth="1"
+        android:pathData="M12,38 L12,40"/>
+    <path
+        android:strokeColor="#757575"
+        android:strokeWidth="1"
+        android:pathData="M16,38 L16,40"/>
+    <path
+        android:strokeColor="#757575"
+        android:strokeWidth="1.5"
+        android:pathData="M12,40 L16,40"/>
+    
+    <!-- Cuchillo (derecha) -->
+    <path
+        android:strokeColor="#757575"
+        android:strokeWidth="1.5"
+        android:pathData="M34,38 L34,42"/>
+    <path
+        android:fillColor="#757575"
+        android:pathData="M33,38 L35,38 L35,39 L33,39 Z"/>
+
+</vector>

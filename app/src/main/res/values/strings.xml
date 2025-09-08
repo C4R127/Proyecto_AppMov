@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">PrimerAvance</string>
+    <string name="title_home">Welcome</string>
+    <string name="title_dashboard">Reserva</string>
+    <string name="title_notifications">Notifications</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Ingresa tu correo y tu contraseña</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="log_in">Log In</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="signup">Signup</string>
+    
+    <!-- Welcome Screen -->
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_subtitle">to our store</string>
+    <string name="welcome_description">Get your groceries in as fast as one hour</string>
+    <string name="get_started">Get Started</string>
+    
+    <!-- Store Screen -->
+    <string name="find_products">Find Products</string>
+    <string name="search_store">Search Store</string>
+    <string name="fresh_fruits_vegetables">Fresh Fruits\n&amp; Vegetable</string>
+    <string name="meat_fish">Meat &amp; Fish</string>
+    <string name="dairy_eggs">Dairy &amp; Eggs</string>
+    
+    <!-- Bottom Navigation -->
+    <string name="shop">Shop</string>
+    <string name="explore">Explore</string>
+    <string name="cart">Cart</string>
+    <string name="favourite">Favourite</string>
+    <string name="account">Account</string>
+</resources>
