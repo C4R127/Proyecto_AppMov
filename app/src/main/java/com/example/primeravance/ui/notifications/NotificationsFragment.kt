@@ -22,17 +22,26 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
-
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Recuperamos los datos del bundle
+        val nombreApellido = arguments?.getString("nombreApellido") ?: "Sin nombre"
+        val turno = arguments?.getString("turno") ?: "Sin turno"
+        val mesa = arguments?.getString("mesa") ?: "Sin mesa"
+        val fecha = arguments?.getString("fecha") ?: "Sin fecha"
+        val hora = arguments?.getString("hora") ?: "Sin hora"
+
+        // Los mostramos en los TextView
+        binding.txtEstadoNombreApellido.text = "Cliente: $nombreApellido"
+        binding.txtEstadoTurnoReserva.text = "Turno: $turno"
+        binding.txtEstadoNumMesa.text = "Mesa: $mesa"
+        binding.txtEstadoFecha.text = "Fecha: $fecha"
+        binding.txtEstadoHora.text = "Hora: $hora"
     }
 
     override fun onDestroyView() {

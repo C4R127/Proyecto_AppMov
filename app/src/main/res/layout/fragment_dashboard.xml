@@ -41,7 +41,6 @@
             <View
                 android:layout_width="32dp"
                 android:layout_height="32dp" />
-
         </LinearLayout>
 
         <!-- Nombre Input -->
@@ -205,17 +204,36 @@
             android:drawablePadding="12dp"
             android:layout_marginBottom="32dp" />
 
-        <!-- Guardar Button -->
-        <Button
-            android:id="@+id/btnGuardar"
+        <!-- Contenedor horizontal para centrar y ordenar los botones -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Guardar Reserva"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:background="@drawable/button_green_rounded"
-            android:layout_marginBottom="24dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="24dp">
+
+            <Button
+                android:id="@+id/btnInicio"
+                android:layout_width="150dp"
+                android:layout_height="57dp"
+                android:background="@drawable/button_green_rounded"
+                android:text="Inicio"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="16dp"/>   <!-- Espacio entre botones -->
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="150dp"
+                android:layout_height="57dp"
+                android:background="@drawable/button_green_rounded"
+                android:text="Guardar Reserva"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -33,8 +33,17 @@ class HomeFragment : Fragment() {
         binding.btnGetStarted.setOnClickListener {
             // Navigate to Dashboard (Store) tab
             Toast.makeText(requireContext(), "Welcome! Navigate to Store tab to shop", Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.navigation_dashboard)
         }
+
+        binding.btnLogOut.setOnClickListener {
+            findNavController().navigate(R.id.loginFragment)
+        }
+
     }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -48,10 +48,11 @@ class LoginFragment : Fragment() {
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
 
-        if (validateInput(email, password)) {
-            // Simulate login success - navigate to main app (tabs)
-            Toast.makeText(requireContext(), "Login successful!", Toast.LENGTH_SHORT).show()
+        if (email == "admin" && password == "admin") {
+            Toast.makeText(requireContext(), "Login exitoso!", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_login_to_home)
+        } else {
+            Toast.makeText(requireContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.primeravance.R
 import com.example.primeravance.databinding.FragmentDashboardBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,6 +45,11 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
+
+        binding.btnInicio.setOnClickListener {
+            findNavController().navigate(R.id.navigation_home)
+        }
+
         // Date picker
         binding.etFecha.setOnClickListener {
             showDatePicker()
@@ -57,6 +64,9 @@ class DashboardFragment : Fragment() {
         binding.btnGuardar.setOnClickListener {
             guardarReserva()
         }
+
+
+
     }
 
     private fun showDatePicker() {
@@ -116,18 +126,17 @@ class DashboardFragment : Fragment() {
 
         // Validate form
         if (validateForm(nombre, apellido, turnoSeleccionado, mesaSeleccionada, fecha, hora)) {
-            // Show confirmation
-            val mensaje = """
-                Reserva guardada exitosamente:
-                
-                Nombre: $nombre $apellido
-                Turno: $turnoSeleccionado
-                Mesa: $mesaSeleccionada
-                Fecha: $fecha
-                Hora: $hora
-            """.trimIndent()
-            
-            Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show()
+            // Creamos el bundle con los datos
+            val bundle = Bundle().apply {
+                putString("nombreApellido", "$nombre $apellido")
+                putString("turno", turnoSeleccionado)
+                putString("mesa", mesaSeleccionada)
+                putString("fecha", fecha)
+                putString("hora", hora)
+            }
+
+            // Navegamos al fragment de Notifications
+            findNavController().navigate(R.id.navigation_notifications, bundle)
             
             // Clear form
             clearForm()
