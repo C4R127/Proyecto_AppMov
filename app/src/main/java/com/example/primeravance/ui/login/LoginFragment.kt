@@ -31,22 +31,22 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.btnLogin.setOnClickListener {
+        binding.btnIngresar.setOnClickListener {
             performLogin()
         }
 
-        binding.tvForgotPassword.setOnClickListener {
+        binding.tvOlvidasteContrasenia.setOnClickListener {
             Toast.makeText(requireContext(), "Forgot Password clicked", Toast.LENGTH_SHORT).show()
         }
 
-        binding.tvSignup.setOnClickListener {
+        binding.tvRegistrar.setOnClickListener {
             Toast.makeText(requireContext(), "Signup clicked", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun performLogin() {
-        val email = binding.etEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString().trim()
+        val email = binding.etUsuario.text.toString().trim()
+        val password = binding.etContrasenia.text.toString().trim()
 
         if (email == "admin" && password == "admin") {
             Toast.makeText(requireContext(), "Login exitoso!", Toast.LENGTH_SHORT).show()
@@ -58,17 +58,17 @@ class LoginFragment : Fragment() {
 
     private fun validateInput(email: String, password: String): Boolean {
         if (email.isEmpty()) {
-            binding.etEmail.error = "Email is required"
+            binding.etUsuario.error = "Email is required"
             return false
         }
 
         if (password.isEmpty()) {
-            binding.etPassword.error = "Password is required"
+            binding.etContrasenia.error = "Password is required"
             return false
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Please enter a valid email"
+            binding.etUsuario.error = "Please enter a valid email"
             return false
         }
 

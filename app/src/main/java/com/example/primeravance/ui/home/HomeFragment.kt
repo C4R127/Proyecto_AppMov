@@ -30,13 +30,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        binding.btnGetStarted.setOnClickListener {
+        binding.btnReserva.setOnClickListener {
             // Navigate to Dashboard (Store) tab
             Toast.makeText(requireContext(), "Welcome! Navigate to Store tab to shop", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.navigation_dashboard)
         }
 
-        binding.btnLogOut.setOnClickListener {
+        binding.btnCerrarSesion.setOnClickListener {
             findNavController().navigate(R.id.loginFragment)
         }
 

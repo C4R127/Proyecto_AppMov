@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/txtNombreApellido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cliente: "
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/txtTurno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Turno: "
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtMesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mesa: "
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha: "
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/txtHora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hora: "
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

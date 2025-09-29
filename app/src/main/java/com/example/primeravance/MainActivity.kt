@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         // Hide ActionBar completely
         supportActionBar?.hide()
 
-        val navView: BottomNavigationView = binding.navView
+        val navView: BottomNavigationView = binding.navBar
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         

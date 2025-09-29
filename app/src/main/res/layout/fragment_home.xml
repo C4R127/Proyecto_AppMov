@@ -88,7 +88,7 @@
 
             <!-- Get Started Button -->
             <Button
-                android:id="@+id/btnGetStarted"
+                android:id="@+id/btn_reserva"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:text="GENERA TU RESERVA"
@@ -101,7 +101,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnLogOut"
+            android:id="@+id/btn_cerrarSesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
