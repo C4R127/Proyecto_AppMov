@@ -1,0 +1,199 @@
+### ===================================
+### SISTEMA DE RESERVAS - API REST
+### Archivo de pruebas HTTP
+### ===================================
+
+### Variables
+@baseUrl = http://localhost:8080/api
+@contentType = application/json
+
+### ===================================
+### RESTAURANTES
+### ===================================
+
+### 1. Listar todos los restaurantes
+GET {{baseUrl}}/restaurantes
+Accept: application/json
+
+### 2. Obtener restaurante por ID
+GET {{baseUrl}}/restaurantes/1
+Accept: application/json
+
+### 3. Crear un nuevo restaurante
+POST {{baseUrl}}/restaurantes
+Content-Type: {{contentType}}
+
+{
+  "nombre": "La Pizzería Italiana",
+  "direccion": "Av. Principal 123",
+  "telefono": "555-1234",
+  "email": "info@pizzeria.com",
+  "horaApertura": "11:00",
+  "horaCierre": "23:00"
+}
+
+### 4. Actualizar restaurante
+PUT {{baseUrl}}/restaurantes/1
+Content-Type: {{contentType}}
+
+{
+  "nombre": "La Pizzería Italiana Premium",
+  "direccion": "Av. Principal 123",
+  "telefono": "555-1234",
+  "email": "info@pizzeria.com",
+  "horaApertura": "11:00",
+  "horaCierre": "00:00"
+}
+
+### 5. Eliminar restaurante
+DELETE {{baseUrl}}/restaurantes/999
+
+### ===================================
+### MESAS
+### ===================================
+
+### 6. Listar todas las mesas de un restaurante
+GET {{baseUrl}}/mesas/restaurante/1
+Accept: application/json
+
+### 7. Listar mesas disponibles
+GET {{baseUrl}}/mesas/restaurante/1/disponibles
+Accept: application/json
+
+### 8. Buscar mesas por capacidad
+GET {{baseUrl}}/mesas/restaurante/1/capacidad/4
+Accept: application/json
+
+### 9. Obtener mesa por ID
+GET {{baseUrl}}/mesas/1
+Accept: application/json
+
+### 10. Crear una nueva mesa
+POST {{baseUrl}}/mesas
+Content-Type: {{contentType}}
+
+{
+  "restauranteId": 1,
+  "numeroMesa": "M-01",
+  "capacidad": 4,
+  "disponible": true
+}
+
+### 11. Actualizar mesa
+PUT {{baseUrl}}/mesas/1
+Content-Type: {{contentType}}
+
+{
+  "numeroMesa": "M-01",
+  "capacidad": 6,
+  "disponible": true
+}
+
+### 12. Cambiar disponibilidad de mesa
+PATCH {{baseUrl}}/mesas/1/disponibilidad?disponible=false
+
+### 13. Eliminar mesa
+DELETE {{baseUrl}}/mesas/999
+
+### ===================================
+### RESERVAS
+### ===================================
+
+### 14. Listar todas las reservas
+GET {{baseUrl}}/reservas
+Accept: application/json
+
+### 15. Obtener reserva por ID
+GET {{baseUrl}}/reservas/1
+Accept: application/json
+
+### 16. Listar reservas de una mesa
+GET {{baseUrl}}/reservas/mesa/1
+Accept: application/json
+
+### 17. Listar reservas por estado (PENDIENTE, CONFIRMADA, CANCELADA, COMPLETADA)
+GET {{baseUrl}}/reservas/estado/PENDIENTE
+Accept: application/json
+
+### 18. Listar reservas de un restaurante desde hoy
+GET {{baseUrl}}/reservas/restaurante/1
+Accept: application/json
+
+### 19. Listar reservas de un restaurante desde una fecha específica
+GET {{baseUrl}}/reservas/restaurante/1?desde=2025-10-07T00:00:00
+Accept: application/json
+
+### 20. Listar reservas por rango de fechas
+GET {{baseUrl}}/reservas/rango-fechas?fechaInicio=2025-10-07T00:00:00&fechaFin=2025-10-08T23:59:59
+Accept: application/json
+
+### 21. Crear una nueva reserva
+POST {{baseUrl}}/reservas
+Content-Type: {{contentType}}
+
+{
+  "mesaId": 1,
+  "nombreCliente": "Juan Pérez",
+  "telefonoCliente": "555-9876",
+  "emailCliente": "juan@example.com",
+  "fechaHoraReserva": "2025-10-07T19:30:00",
+  "numeroPersonas": 4,
+  "observaciones": "Celebración de cumpleaños"
+}
+
+### 22. Cambiar estado de reserva a CONFIRMADA
+PATCH {{baseUrl}}/reservas/1/estado?estado=CONFIRMADA
+
+### 23. Cambiar estado de reserva a COMPLETADA
+PATCH {{baseUrl}}/reservas/1/estado?estado=COMPLETADA
+
+### 24. Cancelar reserva
+PATCH {{baseUrl}}/reservas/1/cancelar
+
+### 25. Eliminar reserva
+DELETE {{baseUrl}}/reservas/999
+
+### ===================================
+### PRUEBAS DE VALIDACIÓN
+### ===================================
+
+### 26. Intentar crear reserva en el pasado (debe fallar)
+POST {{baseUrl}}/reservas
+Content-Type: {{contentType}}
+
+{
+  "mesaId": 1,
+  "nombreCliente": "Test Usuario",
+  "telefonoCliente": "555-0000",
+  "emailCliente": "test@example.com",
+  "fechaHoraReserva": "2020-01-01T12:00:00",
+  "numeroPersonas": 2,
+  "observaciones": "Reserva en el pasado"
+}
+
+### 27. Intentar crear reserva con capacidad excedida (debe fallar)
+POST {{baseUrl}}/reservas
+Content-Type: {{contentType}}
+
+{
+  "mesaId": 1,
+  "nombreCliente": "Test Usuario",
+  "telefonoCliente": "555-0000",
+  "emailCliente": "test@example.com",
+  "fechaHoraReserva": "2025-12-31T20:00:00",
+  "numeroPersonas": 100,
+  "observaciones": "Demasiadas personas"
+}
+
+### 28. Intentar crear restaurante duplicado (debe fallar)
+POST {{baseUrl}}/restaurantes
+Content-Type: {{contentType}}
+
+{
+  "nombre": "La Pizzería Italiana",
+  "direccion": "Otra dirección",
+  "telefono": "555-9999",
+  "email": "otro@email.com",
+  "horaApertura": "10:00",
+  "horaCierre": "22:00"
+}

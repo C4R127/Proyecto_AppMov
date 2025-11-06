@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    
+    <!-- Mesa surface (top) -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M15,30 L85,30 Q90,30 90,35 L90,40 Q90,45 85,45 L15,45 Q10,45 10,40 L10,35 Q10,30 15,30 Z" />
+    
+    <!-- Mesa shadow -->
+    <path
+        android:fillColor="#6D4C41"
+        android:pathData="M15,40 L85,40 Q90,40 90,45 L90,47 Q90,50 85,50 L15,50 Q10,50 10,47 L10,45 Q10,40 15,40 Z" />
+    
+    <!-- Pata izquierda -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M20,45 L25,45 L25,80 Q25,85 20,85 L15,85 Q10,85 10,80 L10,78 Q10,75 15,75 L20,75 Z" />
+    
+    <!-- Pata derecha -->
+    <path
+        android:fillColor="#5D4037"
+        android:pathData="M75,45 L80,45 L80,75 Q85,75 85,78 L85,80 Q85,85 80,85 L75,85 Q70,85 70,80 L70,75 L75,75 Z" />
+    
+    <!-- Pata izquierda frontal -->
+    <path
+        android:fillColor="#4A2C20"
+        android:pathData="M20,45 L22,45 L22,80 L20,80 Z" />
+    
+    <!-- Pata derecha frontal -->
+    <path
+        android:fillColor="#4A2C20"
+        android:pathData="M78,45 L80,45 L80,80 L78,80 Z" />
+    
+    <!-- Decoración de la mesa (líneas) -->
+    <path
+        android:strokeColor="#6D4C41"
+        android:strokeWidth="1"
+        android:pathData="M20,37.5 L80,37.5"/>
+    
+    <!-- Sillas (opcional, pequeñas) -->
+    <!-- Silla izquierda -->
+    <path
+        android:fillColor="#A1887F"
+        android:pathData="M5,50 L12,50 Q14,50 14,52 L14,65 Q14,67 12,67 L5,67 Q3,67 3,65 L3,52 Q3,50 5,50 Z" />
+    
+    <!-- Silla derecha -->
+    <path
+        android:fillColor="#A1887F"
+        android:pathData="M88,50 L95,50 Q97,50 97,52 L97,65 Q97,67 95,67 L88,67 Q86,67 86,65 L86,52 Q86,50 88,50 Z" />
+    
+    <!-- Respaldo silla izquierda -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M5,45 L12,45 Q14,45 14,47 L14,52 L3,52 L3,47 Q3,45 5,45 Z" />
+    
+    <!-- Respaldo silla derecha -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M88,45 L95,45 Q97,45 97,47 L97,52 L86,52 L86,47 Q86,45 88,45 Z" />
+
+</vector>

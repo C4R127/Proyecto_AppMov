@@ -1,0 +1,239 @@
+### ============================================
+### API DE AUTENTICACIÓN (LOGIN)
+### ============================================
+
+### 1. Login - Usuario Admin
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+### 2. Login - Usuario Cliente
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "cliente1",
+  "password": "123456"
+}
+
+### 3. Login - Credenciales incorrectas
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "wrongpassword"
+}
+
+### 4. Registro de nuevo usuario
+POST http://localhost:8080/api/auth/registro
+Content-Type: application/json
+
+{
+  "username": "nuevocliente",
+  "password": "123456",
+  "nombre": "Pedro Nuevo",
+  "email": "pedro@example.com",
+  "telefono": "555-9999"
+}
+
+### 5. Verificar si un usuario existe
+GET http://localhost:8080/api/auth/verificar/cliente1
+
+### ============================================
+### API DE CONSULTA DE TABLAS - USUARIOS
+### ============================================
+
+### 6. Obtener todos los usuarios
+GET http://localhost:8080/api/usuarios
+
+### 7. Obtener usuario por ID
+GET http://localhost:8080/api/usuarios/1
+
+### 8. Actualizar usuario
+PUT http://localhost:8080/api/usuarios/3
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez Actualizado",
+  "email": "juan.nuevo@example.com",
+  "telefono": "555-1234"
+}
+
+### 9. Cambiar contraseña
+PATCH http://localhost:8080/api/usuarios/3/password
+Content-Type: application/json
+
+{
+  "passwordActual": "123456",
+  "passwordNueva": "nuevapass123"
+}
+
+### 10. Desactivar usuario
+PATCH http://localhost:8080/api/usuarios/5/desactivar
+
+### 11. Eliminar usuario
+DELETE http://localhost:8080/api/usuarios/5
+
+### ============================================
+### API DE CONSULTA DE TABLAS - RESTAURANTES
+### ============================================
+
+### 12. Obtener todos los restaurantes
+GET http://localhost:8080/api/restaurantes
+
+### 13. Obtener restaurante por ID
+GET http://localhost:8080/api/restaurantes/1
+
+### 14. Crear nuevo restaurante
+POST http://localhost:8080/api/restaurantes
+Content-Type: application/json
+
+{
+  "nombre": "Restaurante Nuevo",
+  "direccion": "Calle Nueva 999",
+  "telefono": "555-8888",
+  "email": "nuevo@restaurant.com",
+  "horaApertura": "10:00",
+  "horaCierre": "23:00"
+}
+
+### 15. Actualizar restaurante
+PUT http://localhost:8080/api/restaurantes/1
+Content-Type: application/json
+
+{
+  "nombre": "La Pizzería Italiana Renovada",
+  "direccion": "Av. Principal 123",
+  "telefono": "555-1234",
+  "email": "info@pizzeria.com",
+  "horaApertura": "11:00",
+  "horaCierre": "23:00"
+}
+
+### 16. Eliminar restaurante
+DELETE http://localhost:8080/api/restaurantes/4
+
+### ============================================
+### API DE CONSULTA DE TABLAS - MESAS
+### ============================================
+
+### 17. Obtener mesas por restaurante
+GET http://localhost:8080/api/mesas/restaurante/1
+
+### 18. Obtener mesas disponibles de un restaurante
+GET http://localhost:8080/api/mesas/restaurante/1/disponibles
+
+### 19. Obtener mesas por capacidad
+GET http://localhost:8080/api/mesas/restaurante/1/capacidad/4
+
+### 20. Obtener mesa por ID
+GET http://localhost:8080/api/mesas/1
+
+### 21. Crear nueva mesa
+POST http://localhost:8080/api/mesas
+Content-Type: application/json
+
+{
+  "restauranteId": 1,
+  "numeroMesa": "M-10",
+  "capacidad": 4,
+  "disponible": true
+}
+
+### 22. Actualizar mesa
+PUT http://localhost:8080/api/mesas/1
+Content-Type: application/json
+
+{
+  "restauranteId": 1,
+  "numeroMesa": "M-01",
+  "capacidad": 2,
+  "disponible": true
+}
+
+### 23. Cambiar disponibilidad de mesa
+PATCH http://localhost:8080/api/mesas/1/disponibilidad?disponible=false
+
+### 24. Eliminar mesa
+DELETE http://localhost:8080/api/mesas/20
+
+### ============================================
+### API DE CONSULTA DE TABLAS - RESERVAS
+### ============================================
+
+### 25. Obtener todas las reservas
+GET http://localhost:8080/api/reservas
+
+### 26. Obtener reserva por ID
+GET http://localhost:8080/api/reservas/1
+
+### 27. Obtener reservas por mesa
+GET http://localhost:8080/api/reservas/mesa/1
+
+### 28. Obtener reservas por estado
+GET http://localhost:8080/api/reservas/estado/PENDIENTE
+
+### 29. Obtener reservas por restaurante (desde una fecha)
+GET http://localhost:8080/api/reservas/restaurante/1?desde=2025-10-01
+
+### 30. Obtener reservas por rango de fechas (ACTUALIZADO)
+GET http://localhost:8080/api/reservas/rango-fechas?fechaInicio=2025-10-07&fechaFin=2025-10-08
+
+### 31. Crear nueva reserva (CON RANGOS HORARIOS)
+POST http://localhost:8080/api/reservas
+Content-Type: application/json
+
+{
+  "mesaId": 3,
+  "nombreCliente": "Carlos López",
+  "telefonoCliente": "555-3333",
+  "emailCliente": "carlos@example.com",
+  "fechaReserva": "2025-10-21",
+  "horaInicio": "14:00:00",
+  "horaFin": "15:00:00",
+  "numeroPersonas": 4,
+  "precio": 150.00,
+  "observaciones": "Celebración de aniversario"
+}
+
+### 31b. Actualizar una reserva existente (NUEVO)
+PUT http://localhost:8080/api/reservas/1
+Content-Type: application/json
+
+{
+  "mesaId": 3,
+  "nombreCliente": "Carlos López Actualizado",
+  "telefonoCliente": "555-3333",
+  "emailCliente": "carlos@example.com",
+  "fechaReserva": "2025-10-22",
+  "horaInicio": "18:00:00",
+  "horaFin": "19:00:00",
+  "numeroPersonas": 6,
+  "precio": 200.00,
+  "observaciones": "Cambio de horario"
+}
+
+### 32. Cambiar estado de reserva
+PATCH http://localhost:8080/api/reservas/1/estado?estado=CONFIRMADA
+
+### 33. Cancelar reserva
+PATCH http://localhost:8080/api/reservas/2/cancelar
+
+### 34. Eliminar reserva
+DELETE http://localhost:8080/api/reservas/10
+
+### ============================================
+### NOTAS
+### ============================================
+# 
+# Para usar estos endpoints desde tu app Kotlin:
+# 1. Cambia http://localhost:8080 por la IP de tu computadora si estás probando en un dispositivo físico
+# 2. En el emulador de Android usa: http://10.0.2.2:8080
+# 3. Asegúrate de que tu aplicación Spring Boot esté corriendo
+# 4. Todos los endpoints aceptan y devuelven JSON
+#

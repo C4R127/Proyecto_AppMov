@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Botón: Ver Detalles -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVerDetalles"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="📋 Ver Detalles"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:backgroundTint="#2196F3"
+        app:cornerRadius="8dp"
+        app:icon="@android:drawable/ic_menu_info_details"
+        app:iconTint="@color/white"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Botón: Cambiar Estado -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCambiarEstado"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="✓ Cambiar a CONFIRMADA"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        app:backgroundTint="#4CAF50"
+        app:cornerRadius="8dp"
+        app:icon="@android:drawable/ic_menu_edit"
+        app:iconTint="@color/white" />
+
+</LinearLayout>
