@@ -27,12 +27,49 @@ class RestauranteAdapter(
             tvDireccion.text = restaurante.direccion
             tvTelefono.text = restaurante.telefono
 
-            if (restaurante.imageRes != 0) {
-                Picasso.get().load(restaurante.imageRes).into(imgRestaurante)
-            } else {
-                imgRestaurante.setImageResource(R.drawable.restaurante_pf) // placeholder local
+            // Seleccionar imagen según el tipo de restaurante basándose en el nombre
+            val imageRes = when {
+                // Si viene del servidor con imageRes
+                restaurante.imageRes != 0 -> restaurante.imageRes
+                
+                // Detectar tipo por nombre del restaurante
+                restaurante.nombre.contains("pizz", ignoreCase = true) ||
+                restaurante.nombre.contains("ital", ignoreCase = true) -> 
+                    R.drawable.img_restaurant_italian
+                    
+                restaurante.nombre.contains("mex", ignoreCase = true) ||
+                restaurante.nombre.contains("taco", ignoreCase = true) ||
+                restaurante.nombre.contains("burrito", ignoreCase = true) -> 
+                    R.drawable.img_restaurant_mexican
+                    
+                restaurante.nombre.contains("sushi", ignoreCase = true) ||
+                restaurante.nombre.contains("asi", ignoreCase = true) ||
+                restaurante.nombre.contains("chin", ignoreCase = true) ||
+                restaurante.nombre.contains("jap", ignoreCase = true) -> 
+                    R.drawable.img_restaurant_asian
+                    
+                restaurante.nombre.contains("parrilla", ignoreCase = true) ||
+                restaurante.nombre.contains("carne", ignoreCase = true) ||
+                restaurante.nombre.contains("asado", ignoreCase = true) ||
+                restaurante.nombre.contains("steak", ignoreCase = true) -> 
+                    R.drawable.img_restaurant_steakhouse
+                    
+                restaurante.nombre.contains("burger", ignoreCase = true) ||
+                restaurante.nombre.contains("hambur", ignoreCase = true) -> 
+                    R.drawable.img_restaurant_casual
+                
+                // Imagen por defecto
+                else -> R.drawable.ic_restaurant_placeholder
             }
-
+            
+            // Cargar imagen con Picasso
+            Picasso.get()
+                .load(imageRes)
+                .placeholder(R.drawable.ic_restaurant_placeholder)
+                .error(R.drawable.restaurante_pf)
+                .fit()
+                .centerCrop()
+                .into(imgRestaurante)
 
             // Descripción opcional
             if (restaurante.descripcion.isNullOrEmpty()) {

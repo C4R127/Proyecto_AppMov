@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Restaurante Asiático - Sushi -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Fondo -->
+    <path
+        android:fillColor="#F3E5F5"
+        android:pathData="M0,0 L200,0 L200,200 L0,200 Z" />
+    
+    <!-- Plato de sushi (oval) -->
+    <ellipse
+        android:fillColor="#263238"
+        cx="100"
+        cy="130"
+        rx="80"
+        ry="50" />
+    
+    <!-- Borde interior del plato -->
+    <ellipse
+        android:fillColor="#37474F"
+        cx="100"
+        cy="128"
+        rx="75"
+        ry="45" />
+    
+    <!-- Sushi roll 1 - Nori (alga) -->
+    <ellipse
+        android:fillColor="#1B5E20"
+        cx="70"
+        cy="110"
+        rx="18"
+        ry="15" />
+    
+    <!-- Arroz del sushi 1 -->
+    <ellipse
+        android:fillColor="#FFFFFF"
+        cx="70"
+        cy="110"
+        rx="13"
+        ry="10" />
+    
+    <!-- Relleno salmón 1 -->
+    <ellipse
+        android:fillColor="#FF7043"
+        cx="70"
+        cy="110"
+        rx="6"
+        ry="5" />
+    
+    <!-- Sushi roll 2 -->
+    <ellipse
+        android:fillColor="#1B5E20"
+        cx="100"
+        cy="115"
+        rx="18"
+        ry="15" />
+    
+    <ellipse
+        android:fillColor="#FFFFFF"
+        cx="100"
+        cy="115"
+        rx="13"
+        ry="10" />
+    
+    <ellipse
+        android:fillColor="#FF5722"
+        cx="100"
+        cy="115"
+        rx="6"
+        ry="5" />
+    
+    <!-- Sushi roll 3 -->
+    <ellipse
+        android:fillColor="#1B5E20"
+        cx="130"
+        cy="110"
+        rx="18"
+        ry="15" />
+    
+    <ellipse
+        android:fillColor="#FFFFFF"
+        cx="130"
+        cy="110"
+        rx="13"
+        ry="10" />
+    
+    <ellipse
+        android:fillColor="#4CAF50"
+        cx="130"
+        cy="110"
+        rx="6"
+        ry="5" />
+    
+    <!-- Palillos (chopsticks) -->
+    <path
+        android:fillColor="#8D6E63"
+        android:pathData="M140,60 L145,140 L147,140 L142,60 Z" />
+    <path
+        android:fillColor="#A1887F"
+        android:pathData="M150,65 L155,145 L157,145 L152,65 Z" />
+    
+    <!-- Wasabi -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M85,130 Q85,125 90,125 Q95,125 95,130 Q95,135 90,135 Q85,135 85,130" />
+    
+    <!-- Jengibre -->
+    <path
+        android:fillColor="#FFCCBC"
+        android:pathData="M105,132 Q108,128 112,130 Q115,133 112,137 Q108,138 105,135" />
+</vector>

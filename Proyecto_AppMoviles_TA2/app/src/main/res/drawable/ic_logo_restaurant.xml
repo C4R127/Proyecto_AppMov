@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo principal para restaurantes - Diseño de plato con cubiertos -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    
+    <!-- Plato/plato base (círculo) -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M60,20 A40,40 0,1,1 59.99,20 Z" />
+    
+    <!-- Borde interior del plato -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,25 A35,35 0,1,1 59.99,25 Z" />
+    
+    <!-- Fondo del plato -->
+    <path
+        android:fillColor="#66BB6A"
+        android:pathData="M60,30 A30,30 0,1,1 59.99,30 Z" />
+    
+    <!-- Tenedor (izquierda) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M35,45 L35,75 M30,45 L30,65 M40,45 L40,65 M30,65 Q32.5,67 35,67 Q37.5,67 40,65" />
+    
+    <!-- Cuchillo (derecha) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M85,45 L85,75 M82,45 L88,45 L85,52 Z" />
+    
+    <!-- Cuchara (centro-derecha) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M67,45 Q67,52 70,55 Q73,52 73,45 L70,45 M70,55 L70,75" />
+    
+    <!-- Decoración: estrella pequeña arriba -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M60,10 L62,15 L67,15 L63,18 L65,23 L60,20 L55,23 L57,18 L53,15 L58,15 Z" />
+</vector>

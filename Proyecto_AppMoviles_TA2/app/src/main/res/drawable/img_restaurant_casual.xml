@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Restaurante General/Casual - Hamburguesa -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Fondo -->
+    <path
+        android:fillColor="#FFF9C4"
+        android:pathData="M0,0 L200,0 L200,200 L0,200 Z" />
+    
+    <!-- Pan superior -->
+    <path
+        android:fillColor="#D4A574"
+        android:pathData="M50,80 Q50,60 70,55 Q90,50 100,50 Q110,50 130,55 Q150,60 150,80 L50,80 Z" />
+    
+    <!-- Semillas de sésamo -->
+    <ellipse android:fillColor="#FFFFFF" cx="70" cy="65" rx="3" ry="2" />
+    <ellipse android:fillColor="#FFFFFF" cx="85" cy="60" rx="3" ry="2" />
+    <ellipse android:fillColor="#FFFFFF" cx="100" cy="58" rx="3" ry="2" />
+    <ellipse android:fillColor="#FFFFFF" cx="115" cy="60" rx="3" ry="2" />
+    <ellipse android:fillColor="#FFFFFF" cx="130" cy="65" rx="3" ry="2" />
+    
+    <!-- Lechuga -->
+    <path
+        android:fillColor="#66BB6A"
+        android:pathData="M45,85 Q50,80 60,82 Q70,84 80,83 Q90,82 100,83 Q110,84 120,83 Q130,82 140,82 Q150,80 155,85 L150,90 Q140,87 130,88 Q120,89 110,88 Q100,87 90,88 Q80,89 70,88 Q60,87 50,90 Z" />
+    
+    <!-- Tomate -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M48,92 L152,92 L148,100 L52,100 Z" />
+    
+    <!-- Queso -->
+    <path
+        android:fillColor="#FFEB3B"
+        android:pathData="M50,102 L150,102 L145,108 L55,108 Z" />
+    
+    <!-- Carne (hamburguesa) -->
+    <path
+        android:fillColor="#6D4C41"
+        android:pathData="M52,110 L148,110 Q150,115 148,120 L52,120 Q50,115 52,110 Z" />
+    
+    <!-- Marcas de parrilla en la carne -->
+    <path
+        android:fillColor="#4E342E"
+        android:pathData="M60,113 L140,113 M65,117 L135,117" />
+    
+    <!-- Pan inferior -->
+    <path
+        android:fillColor="#D4A574"
+        android:pathData="M50,120 L150,120 Q152,125 150,130 L50,130 Q48,125 50,120 Z" />
+    
+    <!-- Papas fritas al lado -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M160,100 L165,100 L163,130 L158,130 Z M168,105 L173,105 L171,130 L166,130 Z M175,110 L180,110 L178,130 L173,130 Z" />
+</vector>

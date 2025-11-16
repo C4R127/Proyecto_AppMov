@@ -4,30 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/gray_light">
+    android:background="@color/gray_light"
+    android:clipToPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center">
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:gravity="top|center_horizontal">
 
         <!-- Restaurant Table Icon -->
+
         <Button
             android:id="@+id/btn_peruvianFlavor"
-            android:text="Peruvian Flavor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             />
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_purple"
+            android:text="PERUVIAN FLAVOR"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="40dp"
-            android:src="@drawable/ic_restaurant_table"
-            android:contentDescription="Restaurant Table Icon" />
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/ic_logo_restaurant"
+            android:contentDescription="@string/restaurant_logo" />
 
         <!-- Login Title -->
         <TextView

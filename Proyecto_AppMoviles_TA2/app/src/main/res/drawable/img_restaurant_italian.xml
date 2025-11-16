@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Restaurante Italiano - Pizza -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Fondo -->
+    <path
+        android:fillColor="#FFE0B2"
+        android:pathData="M0,0 L200,0 L200,200 L0,200 Z" />
+    
+    <!-- Pizza completa (círculo) -->
+    <circle
+        android:fillColor="#FFD54F"
+        cx="100"
+        cy="100"
+        r="70" />
+    
+    <!-- Borde de la pizza -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M 100,30 A 70,70 0 0,1 170,100 A 70,70 0 0,1 100,170 A 70,70 0 0,1 30,100 A 70,70 0 0,1 100,30 M 100,40 A 60,60 0 0,1 160,100 A 60,60 0 0,1 100,160 A 60,60 0 0,1 40,100 A 60,60 0 0,1 100,40" />
+    
+    <!-- Pepperoni 1 -->
+    <circle
+        android:fillColor="#E53935"
+        cx="80"
+        cy="80"
+        r="12" />
+    
+    <!-- Pepperoni 2 -->
+    <circle
+        android:fillColor="#E53935"
+        cx="120"
+        cy="85"
+        r="12" />
+    
+    <!-- Pepperoni 3 -->
+    <circle
+        android:fillColor="#E53935"
+        cx="100"
+        cy="110"
+        r="12" />
+    
+    <!-- Pepperoni 4 -->
+    <circle
+        android:fillColor="#E53935"
+        cx="75"
+        cy="120"
+        r="12" />
+    
+    <!-- Pepperoni 5 -->
+    <circle
+        android:fillColor="#E53935"
+        cx="125"
+        cy="120"
+        r="12" />
+    
+    <!-- Albahaca 1 -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M90,95 Q85,90 85,85 Q85,80 90,75 Q95,80 95,85 Q95,90 90,95" />
+    
+    <!-- Albahaca 2 -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M115,100 Q110,95 110,90 Q110,85 115,80 Q120,85 120,90 Q120,95 115,100" />
+</vector>

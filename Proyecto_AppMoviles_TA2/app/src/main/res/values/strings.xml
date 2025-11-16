@@ -34,4 +34,9 @@
     <string name="cart">Cart</string>
     <string name="favourite">Favourite</string>
     <string name="account">Account</string>
+    
+    <!-- Descripción de imágenes -->
+    <string name="mesa_icon">Ícono de mesa</string>
+    <string name="restaurant_logo">Logo del restaurante</string>
+    <string name="restaurant_image">Imagen del restaurante</string>
 </resources>

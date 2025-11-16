@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder moderno para imágenes de restaurantes -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- Fondo degradado simulado -->
+    <path
+        android:fillColor="#E8F5E9"
+        android:pathData="M0,0 L200,0 L200,200 L0,200 Z" />
+    
+    <!-- Edificio del restaurante -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M50,120 L150,120 L150,180 L50,180 Z" />
+    
+    <!-- Techo del restaurante -->
+    <path
+        android:fillColor="#388E3C"
+        android:pathData="M40,120 L100,90 L160,120 Z" />
+    
+    <!-- Puerta -->
+    <path
+        android:fillColor="#795548"
+        android:pathData="M85,140 L115,140 L115,180 L85,180 Z" />
+    
+    <!-- Manija de la puerta -->
+    <circle
+        android:fillColor="#FFD700"
+        cx="108"
+        cy="160"
+        r="3" />
+    
+    <!-- Ventana izquierda -->
+    <path
+        android:fillColor="#81C784"
+        android:pathData="M60,135 L75,135 L75,150 L60,150 Z" />
+    
+    <!-- Ventana derecha -->
+    <path
+        android:fillColor="#81C784"
+        android:pathData="M125,135 L140,135 L140,150 L125,150 Z" />
+    
+    <!-- Marco de ventanas -->
+    <path
+        android:fillColor="#2E7D32"
+        android:strokeWidth="1"
+        android:pathData="M67.5,135 L67.5,150 M60,142.5 L75,142.5" />
+    <path
+        android:fillColor="#2E7D32"
+        android:strokeWidth="1"
+        android:pathData="M132.5,135 L132.5,150 M125,142.5 L140,142.5" />
+    
+    <!-- Letrero "Restaurant" -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M70,105 L130,105 L130,115 L70,115 Z" />
+    
+    <!-- Texto decorativo (líneas simulando "RESTAURANT") -->
+    <path
+        android:fillColor="#4CAF50"
+        android:strokeWidth="2"
+        android:pathData="M75,110 L125,110" />
+    
+    <!-- Toldo decorativo -->
+    <path
+        android:fillColor="#FF6F00"
+        android:pathData="M55,125 L145,125 L140,130 L60,130 Z" />
+    <path
+        android:fillColor="#FF8F00"
+        android:pathData="M60,125 L70,125 L70,130 L60,130 Z M80,125 L90,125 L90,130 L80,130 Z M100,125 L110,125 L110,130 L100,130 Z M120,125 L130,125 L130,130 L120,130 Z" />
+</vector>
