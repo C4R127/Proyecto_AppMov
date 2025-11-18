@@ -25,6 +25,10 @@ public class Reserva {
     @JoinColumn(name = "mesa_id", nullable = false)
     private Mesa mesa;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario; // opcional, si la reserva está asociada a un usuario registrado
+    
     @Column(name = "nombre_cliente", nullable = false, length = 100)
     private String nombreCliente;
     

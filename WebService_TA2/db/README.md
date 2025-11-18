@@ -8,27 +8,31 @@
 
 ## 📋 ¿Qué incluye este script?
 
-### 🔹 **4 Tablas:**
+### 🔹 **5 Tablas:**
 
 1. **`usuarios`** - Sistema de login y autenticación
    - Campos: id, username, password, nombre, email, telefono, rol (ENUM), activo, fecha_creacion, ultimo_acceso
    - Roles: ADMIN, EMPLEADO, CLIENTE
 
 2. **`restaurantes`** - Información de restaurantes
-   - Campos: id, nombre, direccion, telefono, email, hora_apertura, hora_cierre
+   - Campos: id, nombre, direccion, telefono, email, **imagen_url**, **imagen_thumbnail_url**, hora_apertura, hora_cierre
 
 3. **`mesas`** - Mesas de cada restaurante
-   - Campos: id, restaurante_id, numero_mesa, capacidad, disponible
+   - Campos: id, restaurante_id, numero_mesa, capacidad, disponible, **imagen_url**
 
 4. **`reservas`** - Reservas de los clientes
-   - Campos: id, mesa_id, nombre_cliente, telefono_cliente, email_cliente, fecha_hora_reserva, numero_personas, **precio (DECIMAL)**, **estado (ENUM)**, observaciones, fecha_creacion, fecha_actualizacion
+   - Campos: id, mesa_id, **usuario_id (nullable)**, nombre_cliente, telefono_cliente, email_cliente, fecha_reserva, hora_inicio, hora_fin, numero_personas, **precio (DECIMAL)**, **estado (ENUM)**, observaciones, fecha_creacion, fecha_actualizacion
    - Estados: PENDIENTE, CONFIRMADA, CANCELADA, COMPLETADA
+
+5. **`reviews`** - Comentarios/calificaciones asociados a restaurantes
+   - Campos: id, restaurante_id, usuario_id, nombre_cliente, comentario, calificacion (1-5), fecha_creacion
 
 ### 🔹 **Datos de Prueba:**
 - ✅ 5 usuarios (1 admin, 1 empleado, 3 clientes)
-- ✅ 3 restaurantes
-- ✅ 16 mesas distribuidas en los restaurantes
-- ✅ 4 reservas de ejemplo
+- ✅ 3 restaurantes (con URLs de imagen y miniatura)
+- ✅ 45 mesas (15 por restaurante, todas con imagen de referencia)
+- ✅ 4 reservas de ejemplo con asociación opcional a usuarios
+- ✅ 4 reviews de ejemplo
 
 ---
 
@@ -61,13 +65,14 @@ Después de ejecutar el script, deberías tener:
 ```sql
 -- Verificar tablas creadas
 SHOW TABLES;
--- Resultado: usuarios, restaurantes, mesas, reservas
+-- Resultado: usuarios, restaurantes, mesas, reservas, reviews
 
 -- Verificar datos
 SELECT COUNT(*) FROM usuarios;      -- 5 usuarios
 SELECT COUNT(*) FROM restaurantes;  -- 3 restaurantes
-SELECT COUNT(*) FROM mesas;         -- 16 mesas
+SELECT COUNT(*) FROM mesas;         -- 45 mesas (15 por restaurante)
 SELECT COUNT(*) FROM reservas;      -- 4 reservas
+SELECT COUNT(*) FROM reviews;       -- 4 reviews
 ```
 
 ---

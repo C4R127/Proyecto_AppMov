@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class CrearReservaRequest {
     private Integer mesaId;
+    private Integer usuarioId; // opcional: si la reserva la realiza un usuario registrado
     private String nombreCliente;
     private String telefonoCliente;
     private String emailCliente;

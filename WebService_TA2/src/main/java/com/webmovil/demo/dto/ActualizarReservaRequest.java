@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class ActualizarReservaRequest {
     private Integer mesaId;
+    private Integer usuarioId;
     private String nombreCliente;
     private String telefonoCliente;
     private String emailCliente;

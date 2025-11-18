@@ -63,6 +63,7 @@ public class MesaService {
         mesa.setNumeroMesa(mesaDTO.getNumeroMesa());
         mesa.setCapacidad(mesaDTO.getCapacidad());
         mesa.setDisponible(mesaDTO.getDisponible() != null ? mesaDTO.getDisponible() : true);
+        mesa.setImagenUrl(mesaDTO.getImagenUrl());
         
         Mesa guardada = mesaRepository.save(mesa);
         return convertirADTO(guardada);
@@ -76,6 +77,7 @@ public class MesaService {
         mesa.setNumeroMesa(mesaDTO.getNumeroMesa());
         mesa.setCapacidad(mesaDTO.getCapacidad());
         mesa.setDisponible(mesaDTO.getDisponible());
+        mesa.setImagenUrl(mesaDTO.getImagenUrl());
         
         Mesa actualizada = mesaRepository.save(mesa);
         return convertirADTO(actualizada);
@@ -106,6 +108,7 @@ public class MesaService {
         dto.setNumeroMesa(mesa.getNumeroMesa());
         dto.setCapacidad(mesa.getCapacidad());
         dto.setDisponible(mesa.getDisponible());
+        dto.setImagenUrl(mesa.getImagenUrl());
         return dto;
     }
 }

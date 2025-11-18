@@ -6,8 +6,10 @@ import com.webmovil.demo.dto.ReservaDTO;
 import com.webmovil.demo.entity.Mesa;
 import com.webmovil.demo.entity.Reserva;
 import com.webmovil.demo.entity.Reserva.EstadoReserva;
+import com.webmovil.demo.entity.Usuario;
 import com.webmovil.demo.repository.MesaRepository;
 import com.webmovil.demo.repository.ReservaRepository;
+import com.webmovil.demo.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ public class ReservaService {
     
     private final ReservaRepository reservaRepository;
     private final MesaRepository mesaRepository;
+    private final UsuarioRepository usuarioRepository;
     
     @Transactional(readOnly = true)
     public List<ReservaDTO> obtenerTodasLasReservas() {
@@ -112,6 +115,15 @@ public class ReservaService {
         // Crear la reserva
         Reserva reserva = new Reserva();
         reserva.setMesa(mesa);
+        // Asociar usuario si se proporciona
+        if (request.getUsuarioId() != null) {
+            Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + request.getUsuarioId()));
+            reserva.setUsuario(usuario);
+            if (request.getNombreCliente() == null || request.getNombreCliente().isBlank()) {
+                reserva.setNombreCliente(usuario.getNombre());
+            }
+        }
         reserva.setNombreCliente(request.getNombreCliente());
         reserva.setTelefonoCliente(request.getTelefonoCliente());
         reserva.setEmailCliente(request.getEmailCliente());
@@ -180,6 +192,11 @@ public class ReservaService {
         if (request.getNumeroPersonas() != null) reserva.setNumeroPersonas(request.getNumeroPersonas());
         if (request.getPrecio() != null) reserva.setPrecio(request.getPrecio());
         if (request.getObservaciones() != null) reserva.setObservaciones(request.getObservaciones());
+        if (request.getUsuarioId() != null) {
+            Usuario usuario = usuarioRepository.findById(request.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + request.getUsuarioId()));
+            reserva.setUsuario(usuario);
+        }
         
         Reserva actualizada = reservaRepository.save(reserva);
         return convertirADTO(actualizada);
@@ -246,6 +263,10 @@ public class ReservaService {
     private ReservaDTO convertirADTO(Reserva reserva) {
         ReservaDTO dto = new ReservaDTO();
         dto.setId(reserva.getId());
+        if (reserva.getUsuario() != null) {
+            dto.setUsuarioId(reserva.getUsuario().getId());
+            dto.setNombreUsuario(reserva.getUsuario().getNombre());
+        }
         dto.setMesaId(reserva.getMesa().getId());
         dto.setNumeroMesa(reserva.getMesa().getNumeroMesa());
         dto.setNombreCliente(reserva.getNombreCliente());
@@ -260,5 +281,27 @@ public class ReservaService {
         dto.setObservaciones(reserva.getObservaciones());
         dto.setFechaCreacion(reserva.getFechaCreacion());
         return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservaDTO> obtenerReservasPorUsuario(Integer usuarioId, String estado, LocalDate desde, LocalDate hasta) {
+        List<Reserva> reservas = reservaRepository.findByUsuarioId(usuarioId);
+        return reservas.stream()
+            .filter(r -> {
+                if (estado == null || estado.isBlank()) return true;
+                try {
+                    return r.getEstado().name().equalsIgnoreCase(estado);
+                } catch (Exception ex) {
+                    return false;
+                }
+            })
+            .filter(r -> {
+                if (desde == null && hasta == null) return true;
+                if (desde != null && r.getFechaReserva().isBefore(desde)) return false;
+                if (hasta != null && r.getFechaReserva().isAfter(hasta)) return false;
+                return true;
+            })
+            .map(this::convertirADTO)
+            .collect(Collectors.toList());
     }
 }

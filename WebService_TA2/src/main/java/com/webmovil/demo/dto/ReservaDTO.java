@@ -15,7 +15,9 @@ import java.time.LocalDateTime;
 public class ReservaDTO {
     private Integer id;
     private Integer mesaId;
+    private Integer usuarioId;
     private String numeroMesa;
+    private String nombreUsuario;
     private String nombreCliente;
     private String telefonoCliente;
     private String emailCliente;

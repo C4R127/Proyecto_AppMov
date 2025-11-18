@@ -89,7 +89,7 @@ GET http://localhost:8080/api/restaurantes
 ### 13. Obtener restaurante por ID
 GET http://localhost:8080/api/restaurantes/1
 
-### 14. Crear nuevo restaurante
+### 14. Crear nuevo restaurante (CON IMÁGENES)
 POST http://localhost:8080/api/restaurantes
 Content-Type: application/json
 
@@ -98,11 +98,13 @@ Content-Type: application/json
   "direccion": "Calle Nueva 999",
   "telefono": "555-8888",
   "email": "nuevo@restaurant.com",
+  "imagenUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
+  "imagenThumbnailUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200",
   "horaApertura": "10:00",
   "horaCierre": "23:00"
 }
 
-### 15. Actualizar restaurante
+### 15. Actualizar restaurante (CON IMÁGENES)
 PUT http://localhost:8080/api/restaurantes/1
 Content-Type: application/json
 
@@ -111,6 +113,8 @@ Content-Type: application/json
   "direccion": "Av. Principal 123",
   "telefono": "555-1234",
   "email": "info@pizzeria.com",
+  "imagenUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
+  "imagenThumbnailUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200",
   "horaApertura": "11:00",
   "horaCierre": "23:00"
 }
@@ -134,7 +138,7 @@ GET http://localhost:8080/api/mesas/restaurante/1/capacidad/4
 ### 20. Obtener mesa por ID
 GET http://localhost:8080/api/mesas/1
 
-### 21. Crear nueva mesa
+### 21. Crear nueva mesa (CON IMAGEN)
 POST http://localhost:8080/api/mesas
 Content-Type: application/json
 
@@ -142,10 +146,11 @@ Content-Type: application/json
   "restauranteId": 1,
   "numeroMesa": "M-10",
   "capacidad": 4,
-  "disponible": true
+  "disponible": true,
+  "imagenUrl": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400"
 }
 
-### 22. Actualizar mesa
+### 22. Actualizar mesa (CON IMAGEN)
 PUT http://localhost:8080/api/mesas/1
 Content-Type: application/json
 
@@ -153,7 +158,8 @@ Content-Type: application/json
   "restauranteId": 1,
   "numeroMesa": "M-01",
   "capacidad": 2,
-  "disponible": true
+  "disponible": true,
+  "imagenUrl": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400"
 }
 
 ### 23. Cambiar disponibilidad de mesa

@@ -21,6 +21,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     
     List<Reserva> findByEmailCliente(String emailCliente);
     
+    List<Reserva> findByUsuarioId(Integer usuarioId);
+    
     // Buscar reservas por mesa y fecha específica
     @Query("SELECT r FROM Reserva r WHERE r.mesa.id = :mesaId AND r.fechaReserva = :fecha AND r.estado != 'CANCELADA'")
     List<Reserva> findReservasActivasPorMesaYFecha(

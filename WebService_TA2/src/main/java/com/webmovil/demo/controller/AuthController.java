@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -48,6 +50,29 @@ public class AuthController {
         try {
             UsuarioDTO nuevoUsuario = usuarioService.registrar(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Alias in English for client expectation: /register
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegistroRequest request) {
+        return registro(request);
+    }
+
+    /**
+     * API para recuperación/olvido de contraseña
+     * POST /api/auth/forgot-password
+     * Body: { "username": "user" }  OR { "email": "email@example.com" }
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
+        try {
+            String username = body.get("username");
+            String email = body.get("email");
+            usuarioService.forgotPassword(username, email);
+            return ResponseEntity.ok("Instrucciones de recuperación enviadas (simulado)");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

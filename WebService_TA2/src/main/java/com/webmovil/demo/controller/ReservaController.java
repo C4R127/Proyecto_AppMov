@@ -56,6 +56,16 @@ public class ReservaController {
         LocalDate fecha = (desde != null) ? desde : LocalDate.now();
         return ResponseEntity.ok(reservaService.obtenerReservasPorRestaurante(restauranteId, fecha));
     }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<List<ReservaDTO>> obtenerPorUsuario(
+            @PathVariable Integer usuarioId,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta
+    ) {
+        return ResponseEntity.ok(reservaService.obtenerReservasPorUsuario(usuarioId, estado, desde, hasta));
+    }
     
     @GetMapping("/rango-fechas")
     public ResponseEntity<List<ReservaDTO>> obtenerPorRangoFechas(

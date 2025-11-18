@@ -46,7 +46,9 @@ public class UsuarioService {
         
         // Login exitoso
         UsuarioDTO usuarioDTO = convertirADTO(usuario);
-        return new LoginResponse(true, "Login exitoso", usuarioDTO);
+        // Generar token simple (UUID). In production, use JWT.
+        String token = java.util.UUID.randomUUID().toString();
+        return new LoginResponse(true, "Login exitoso", usuarioDTO, token);
     }
     
     @Transactional
@@ -130,6 +132,28 @@ public class UsuarioService {
         
         usuario.setActivo(false);
         usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void forgotPassword(String username, String email) {
+        Usuario usuario = null;
+        if (username != null && !username.isEmpty()) {
+            usuario = usuarioRepository.findByUsername(username).orElse(null);
+        }
+        if (usuario == null && email != null && !email.isEmpty()) {
+            usuario = usuarioRepository.findByEmail(email).orElse(null);
+        }
+
+        if (usuario == null) {
+            throw new RuntimeException("Usuario no encontrado para recuperar contraseña");
+        }
+
+        // Generar contraseña temporal simple. En producción, enviar un token por email.
+        String tempPassword = "temp-" + java.util.UUID.randomUUID().toString().substring(0, 8);
+        usuario.setPassword(tempPassword);
+        usuarioRepository.save(usuario);
+
+        // Nota: Aquí se debería enviar un correo con instrucciones. Por ahora devolvemos el hecho de actualización.
     }
     
     @Transactional

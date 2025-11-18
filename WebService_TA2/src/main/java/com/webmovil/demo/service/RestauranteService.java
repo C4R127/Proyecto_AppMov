@@ -41,6 +41,8 @@ public class RestauranteService {
         restaurante.setDireccion(restauranteDTO.getDireccion());
         restaurante.setTelefono(restauranteDTO.getTelefono());
         restaurante.setEmail(restauranteDTO.getEmail());
+        restaurante.setImagenUrl(restauranteDTO.getImagenUrl());
+        restaurante.setImagenThumbnailUrl(restauranteDTO.getImagenThumbnailUrl());
         restaurante.setHoraApertura(restauranteDTO.getHoraApertura());
         restaurante.setHoraCierre(restauranteDTO.getHoraCierre());
         
@@ -57,6 +59,8 @@ public class RestauranteService {
         restaurante.setDireccion(restauranteDTO.getDireccion());
         restaurante.setTelefono(restauranteDTO.getTelefono());
         restaurante.setEmail(restauranteDTO.getEmail());
+        restaurante.setImagenUrl(restauranteDTO.getImagenUrl());
+        restaurante.setImagenThumbnailUrl(restauranteDTO.getImagenThumbnailUrl());
         restaurante.setHoraApertura(restauranteDTO.getHoraApertura());
         restaurante.setHoraCierre(restauranteDTO.getHoraCierre());
         
@@ -79,6 +83,8 @@ public class RestauranteService {
         dto.setDireccion(restaurante.getDireccion());
         dto.setTelefono(restaurante.getTelefono());
         dto.setEmail(restaurante.getEmail());
+        dto.setImagenUrl(restaurante.getImagenUrl());
+        dto.setImagenThumbnailUrl(restaurante.getImagenThumbnailUrl());
         dto.setHoraApertura(restaurante.getHoraApertura());
         dto.setHoraCierre(restaurante.getHoraCierre());
         return dto;

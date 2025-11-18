@@ -33,6 +33,9 @@ public class Mesa {
     @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     private Boolean disponible = true;
     
+    @Column(name = "imagen_url", length = 500)
+    private String imagenUrl;
+    
     @OneToMany(mappedBy = "mesa", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 }

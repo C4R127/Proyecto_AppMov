@@ -30,6 +30,12 @@ public class Restaurante {
     @Column(length = 100)
     private String email;
     
+    @Column(name = "imagen_url", length = 500)
+    private String imagenUrl;
+    
+    @Column(name = "imagen_thumbnail_url", length = 500)
+    private String imagenThumbnailUrl;
+    
     @Column(name = "hora_apertura", length = 5)
     private String horaApertura; // Formato HH:mm
     

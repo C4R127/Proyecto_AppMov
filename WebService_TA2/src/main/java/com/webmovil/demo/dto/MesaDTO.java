@@ -13,4 +13,5 @@ public class MesaDTO {
     private String numeroMesa;
     private Integer capacidad;
     private Boolean disponible;
+    private String imagenUrl;
 }

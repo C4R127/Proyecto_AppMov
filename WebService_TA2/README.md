@@ -3,6 +3,12 @@
 ## Descripción
 API REST para gestionar reservas de mesas en restaurantes, desarrollada con Spring Boot 3 y MySQL.
 
+### ✨ Nuevas Características (2025-11-15)
+- 📸 **Soporte completo para imágenes**: Integración con Picasso para aplicaciones Android
+- 🖼️ URLs de imágenes para restaurantes (imagen principal + thumbnail)
+- 🪑 URLs de imágenes para mesas
+- 🚀 Optimización para carga eficiente en móviles
+
 ## Tecnologías Utilizadas
 - Java 17
 - Spring Boot 3.4
@@ -38,13 +44,20 @@ server.port=8080
 CREATE DATABASE reservas_simple;
 ```
 
+## 📸 Guías de Implementación de Imágenes
+
+Si vas a usar esta API con una aplicación Android que utiliza Picasso:
+- 📘 **[QUICKSTART-PICASSO.md](QUICKSTART-PICASSO.md)** - Inicio rápido (5 minutos)
+- 📗 **[GUIA-IMPLEMENTACION-PICASSO.md](GUIA-IMPLEMENTACION-PICASSO.md)** - Guía completa y detallada
+- 📙 **[EJEMPLOS-RESPUESTAS-JSON.http](EJEMPLOS-RESPUESTAS-JSON.http)** - Ejemplos de código Android con Picasso
+
 ## Estructura del Proyecto
 
 ```
 src/main/java/com/webmovil/demo/
 ├── entity/          # Entidades JPA
-│   ├── Restaurante.java
-│   ├── Mesa.java
+│   ├── Restaurante.java     (✨ Incluye imagenUrl)
+│   ├── Mesa.java             (✨ Incluye imagenUrl)
 │   └── Reserva.java
 ├── repository/      # Repositorios JPA
 │   ├── RestauranteRepository.java
@@ -89,6 +102,23 @@ Content-Type: application/json
   "direccion": "Calle Principal 123",
   "telefono": "555-1234",
   "email": "info@elbuensabor.com",
+  "imagenUrl": "https://example.com/restaurante.jpg",
+  "imagenThumbnailUrl": "https://example.com/restaurante-thumb.jpg",
+  "horaApertura": "10:00",
+  "horaCierre": "22:00"
+}
+```
+
+**Respuesta esperada:**
+```json
+{
+  "id": 1,
+  "nombre": "Restaurante El Buen Sabor",
+  "direccion": "Calle Principal 123",
+  "telefono": "555-1234",
+  "email": "info@elbuensabor.com",
+  "imagenUrl": "https://example.com/restaurante.jpg",
+  "imagenThumbnailUrl": "https://example.com/restaurante-thumb.jpg",
   "horaApertura": "10:00",
   "horaCierre": "22:00"
 }
@@ -145,7 +175,20 @@ Content-Type: application/json
   "restauranteId": 1,
   "numeroMesa": "M-01",
   "capacidad": 4,
-  "disponible": true
+  "disponible": true,
+  "imagenUrl": "https://example.com/mesa.jpg"
+}
+```
+
+**Respuesta esperada:**
+```json
+{
+  "id": 1,
+  "restauranteId": 1,
+  "numeroMesa": "M-01",
+  "capacidad": 4,
+  "disponible": true,
+  "imagenUrl": "https://example.com/mesa.jpg"
 }
 ```
 
@@ -262,8 +305,9 @@ DELETE /api/reservas/{id}
 
 ### Pasos
 1. **Inicia XAMPP** y asegúrate de que MySQL esté ejecutándose
-2. **Crea la base de datos** `reservas_simple` usando phpMyAdmin o ejecutando el script SQL
-3. **Ejecuta la aplicación**:
+2. **Crea la base de datos** usando el script completo: `db/DATABASE_COMPLETE.sql`
+3. **✨ NUEVO: Agrega soporte para imágenes** ejecutando: `db/ADD_IMAGE_URLS.sql`
+4. **Ejecuta la aplicación**:
 ```bash
 mvnw spring-boot:run
 ```
@@ -322,6 +366,36 @@ Alternativamente, Hibernate creará automáticamente estas tablas al ejecutar la
 - **Validaciones**: Todas las operaciones incluyen validaciones de negocio
 - **Manejo de errores**: Respuestas apropiadas para errores comunes
 - **Logging SQL**: Las consultas SQL se muestran en consola para debugging
+- **✨ Soporte de imágenes**: URLs optimizadas para carga con Picasso en Android
+  - Imágenes principales y thumbnails para restaurantes
+  - URLs de imágenes para mesas
+  - Compatible con servicios cloud (Firebase, Cloudinary, etc.)
+
+## 📱 Integración con Android
+
+### Ejemplo de uso con Retrofit + Picasso
+
+```kotlin
+// Modelo de datos
+data class Restaurante(
+    val id: Int,
+    val nombre: String,
+    val direccion: String,
+    val imagenUrl: String?,
+    val imagenThumbnailUrl: String?,
+    val horaApertura: String,
+    val horaCierre: String
+)
+
+// Cargar imagen con Picasso
+Picasso.get()
+    .load(restaurante.imagenUrl)
+    .placeholder(R.drawable.ic_placeholder)
+    .error(R.drawable.ic_error)
+    .into(imageView)
+```
+
+Ver **[EJEMPLOS-RESPUESTAS-JSON.http](EJEMPLOS-RESPUESTAS-JSON.http)** para ejemplos completos.
 
 ## Autor
 Sistema creado para gestión de reservas de restaurante.

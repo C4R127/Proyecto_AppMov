@@ -13,6 +13,8 @@ public class RestauranteDTO {
     private String direccion;
     private String telefono;
     private String email;
+    private String imagenUrl;
+    private String imagenThumbnailUrl;
     private String horaApertura;
     private String horaCierre;
 }

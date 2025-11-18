@@ -1,0 +1,286 @@
+### ============================================
+### EJEMPLOS DE RESPUESTAS CON IMÁGENES
+### Estos son los JSONs que recibirá tu app Android
+### ============================================
+
+### EJEMPLO 1: GET /api/restaurantes
+### Respuesta esperada:
+# [
+#   {
+#     "id": 1,
+#     "nombre": "La Pizzería Italiana",
+#     "direccion": "Av. Principal 123",
+#     "telefono": "555-1234",
+#     "email": "info@pizzeria.com",
+#     "imagenUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
+#     "imagenThumbnailUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200",
+#     "horaApertura": "11:00",
+#     "horaCierre": "23:00"
+#   },
+#   {
+#     "id": 2,
+#     "nombre": "El Asador Criollo",
+#     "direccion": "Calle Comercio 456",
+#     "telefono": "555-5678",
+#     "email": "contacto@asador.com",
+#     "imagenUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800",
+#     "imagenThumbnailUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200",
+#     "horaApertura": "12:00",
+#     "horaCierre": "00:00"
+#   },
+#   {
+#     "id": 3,
+#     "nombre": "Sushi House",
+#     "direccion": "Boulevard Central 789",
+#     "telefono": "555-9012",
+#     "email": "reservas@sushihouse.com",
+#     "imagenUrl": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800",
+#     "imagenThumbnailUrl": "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=200",
+#     "horaApertura": "12:00",
+#     "horaCierre": "22:00"
+#   }
+# ]
+
+### EJEMPLO 2: GET /api/restaurantes/1
+### Respuesta esperada:
+# {
+#   "id": 1,
+#   "nombre": "La Pizzería Italiana",
+#   "direccion": "Av. Principal 123",
+#   "telefono": "555-1234",
+#   "email": "info@pizzeria.com",
+#   "imagenUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
+#   "imagenThumbnailUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200",
+#   "horaApertura": "11:00",
+#   "horaCierre": "23:00"
+# }
+
+### EJEMPLO 3: GET /api/mesas/restaurante/1
+### Respuesta esperada:
+# [
+#   {
+#     "id": 1,
+#     "restauranteId": 1,
+#     "numeroMesa": "M-01",
+#     "capacidad": 2,
+#     "disponible": true,
+#     "imagenUrl": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400"
+#   },
+#   {
+#     "id": 2,
+#     "restauranteId": 1,
+#     "numeroMesa": "M-02",
+#     "capacidad": 2,
+#     "disponible": true,
+#     "imagenUrl": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400"
+#   },
+#   {
+#     "id": 3,
+#     "restauranteId": 1,
+#     "numeroMesa": "M-03",
+#     "capacidad": 4,
+#     "disponible": true,
+#     "imagenUrl": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400"
+#   }
+# ]
+
+### ============================================
+### CÓMO USAR EN ANDROID CON RETROFIT + PICASSO
+### ============================================
+
+### Paso 1: Define tus modelos de datos
+# data class Restaurante(
+#     val id: Int,
+#     val nombre: String,
+#     val direccion: String,
+#     val telefono: String,
+#     val email: String,
+#     val imagenUrl: String?,
+#     val imagenThumbnailUrl: String?,
+#     val horaApertura: String,
+#     val horaCierre: String
+# )
+#
+# data class Mesa(
+#     val id: Int,
+#     val restauranteId: Int,
+#     val numeroMesa: String,
+#     val capacidad: Int,
+#     val disponible: Boolean,
+#     val imagenUrl: String?
+# )
+
+### Paso 2: Retrofit Service Interface
+# interface RestauranteService {
+#     @GET("restaurantes")
+#     suspend fun getRestaurantes(): List<Restaurante>
+#     
+#     @GET("restaurantes/{id}")
+#     suspend fun getRestaurante(@Path("id") id: Int): Restaurante
+#     
+#     @GET("mesas/restaurante/{id}")
+#     suspend fun getMesasByRestaurante(@Path("id") restauranteId: Int): List<Mesa>
+# }
+
+### Paso 3: En tu RecyclerView Adapter
+# class RestauranteAdapter(
+#     private val restaurantes: List<Restaurante>,
+#     private val onClick: (Restaurante) -> Unit
+# ) : RecyclerView.Adapter<RestauranteAdapter.ViewHolder>() {
+#     
+#     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+#         val imageView: ImageView = view.findViewById(R.id.ivRestaurante)
+#         val tvNombre: TextView = view.findViewById(R.id.tvNombre)
+#         val tvDireccion: TextView = view.findViewById(R.id.tvDireccion)
+#         val tvHorario: TextView = view.findViewById(R.id.tvHorario)
+#     }
+#     
+#     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+#         val view = LayoutInflater.from(parent.context)
+#             .inflate(R.layout.item_restaurante, parent, false)
+#         return ViewHolder(view)
+#     }
+#     
+#     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+#         val restaurante = restaurantes[position]
+#         
+#         holder.tvNombre.text = restaurante.nombre
+#         holder.tvDireccion.text = restaurante.direccion
+#         holder.tvHorario.text = "${restaurante.horaApertura} - ${restaurante.horaCierre}"
+#         
+#         // AQUÍ ES DONDE USAS PICASSO
+#         Picasso.get()
+#             .load(restaurante.imagenThumbnailUrl ?: restaurante.imagenUrl)
+#             .placeholder(R.drawable.ic_restaurant_placeholder)
+#             .error(R.drawable.ic_restaurant_error)
+#             .resize(200, 150)
+#             .centerCrop()
+#             .into(holder.imageView)
+#         
+#         holder.itemView.setOnClickListener { onClick(restaurante) }
+#     }
+#     
+#     override fun getItemCount() = restaurantes.size
+# }
+
+### Paso 4: Layout del Item (item_restaurante.xml)
+# <?xml version="1.0" encoding="utf-8"?>
+# <androidx.cardview.widget.CardView 
+#     xmlns:android="http://schemas.android.com/apk/res/android"
+#     xmlns:app="http://schemas.android.com/apk/res-auto"
+#     android:layout_width="match_parent"
+#     android:layout_height="wrap_content"
+#     android:layout_margin="8dp"
+#     app:cardCornerRadius="8dp"
+#     app:cardElevation="4dp">
+#     
+#     <LinearLayout
+#         android:layout_width="match_parent"
+#         android:layout_height="wrap_content"
+#         android:orientation="horizontal"
+#         android:padding="12dp">
+#         
+#         <!-- IMAGEN DEL RESTAURANTE -->
+#         <ImageView
+#             android:id="@+id/ivRestaurante"
+#             android:layout_width="100dp"
+#             android:layout_height="100dp"
+#             android:scaleType="centerCrop"
+#             android:contentDescription="@string/restaurant_image" />
+#         
+#         <LinearLayout
+#             android:layout_width="0dp"
+#             android:layout_height="wrap_content"
+#             android:layout_weight="1"
+#             android:layout_marginStart="12dp"
+#             android:orientation="vertical">
+#             
+#             <TextView
+#                 android:id="@+id/tvNombre"
+#                 android:layout_width="match_parent"
+#                 android:layout_height="wrap_content"
+#                 android:textSize="18sp"
+#                 android:textStyle="bold"
+#                 android:textColor="@color/black" />
+#             
+#             <TextView
+#                 android:id="@+id/tvDireccion"
+#                 android:layout_width="match_parent"
+#                 android:layout_height="wrap_content"
+#                 android:layout_marginTop="4dp"
+#                 android:textSize="14sp"
+#                 android:textColor="@color/gray" />
+#             
+#             <TextView
+#                 android:id="@+id/tvHorario"
+#                 android:layout_width="match_parent"
+#                 android:layout_height="wrap_content"
+#                 android:layout_marginTop="4dp"
+#                 android:textSize="12sp"
+#                 android:textColor="@color/primary" />
+#         </LinearLayout>
+#     </LinearLayout>
+# </androidx.cardview.widget.CardView>
+
+### ============================================
+### EJEMPLOS DE USO AVANZADO DE PICASSO
+### ============================================
+
+### Ejemplo 1: Imagen con transformación circular
+# Picasso.get()
+#     .load(restaurante.imagenUrl)
+#     .transform(CircleTransform())
+#     .into(imageView)
+
+### Ejemplo 2: Cargar desde caché primero
+# Picasso.get()
+#     .load(restaurante.imagenUrl)
+#     .networkPolicy(NetworkPolicy.OFFLINE)
+#     .into(imageView, object : Callback {
+#         override fun onSuccess() {
+#             // Cargado desde caché
+#         }
+#         override fun onError(e: Exception?) {
+#             // Intentar desde red
+#             Picasso.get()
+#                 .load(restaurante.imagenUrl)
+#                 .into(imageView)
+#         }
+#     })
+
+### Ejemplo 3: Diferentes tamaños según el contexto
+# // Para lista (thumbnail)
+# Picasso.get()
+#     .load(restaurante.imagenThumbnailUrl)
+#     .resize(200, 150)
+#     .centerCrop()
+#     .into(thumbnailImageView)
+#
+# // Para detalle (imagen completa)
+# Picasso.get()
+#     .load(restaurante.imagenUrl)
+#     .fit()
+#     .centerInside()
+#     .into(fullImageView)
+
+### Ejemplo 4: Con animación de fade
+# Picasso.get()
+#     .load(restaurante.imagenUrl)
+#     .placeholder(R.drawable.placeholder)
+#     .error(R.drawable.error)
+#     .fade(300) // Fade de 300ms
+#     .into(imageView)
+
+### ============================================
+### VENTAJAS DE ESTE ENFOQUE
+### ============================================
+# 
+# ✅ Backend ligero: Solo envía URLs (pocos bytes)
+# ✅ Caché automático: Picasso cachea las imágenes descargadas
+# ✅ Optimización: Redimensiona imágenes según necesidad
+# ✅ Manejo de errores: Placeholders y fallbacks
+# ✅ Performance: Carga asíncrona, no bloquea UI
+# ✅ Flexibilidad: Fácil cambiar URLs sin modificar app
+# ✅ Escalabilidad: Imágenes pueden estar en CDN
+# ✅ Económico: No sobrecarga tu servidor backend
+
