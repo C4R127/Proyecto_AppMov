@@ -5,18 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.primeravance.R
-import com.example.primeravance.adapter.MesaAdapter
+import com.example.primeravance.adapter.MesaGridAdapter
+import com.example.primeravance.adapter.MesaSlot
+import com.example.primeravance.data.SessionManager
+import com.example.primeravance.databinding.DialogReviewBinding
 import com.example.primeravance.databinding.FragmentMesasBinding
 import com.example.primeravance.model.Mesa
 import com.example.primeravance.model.ReservaRequest
 import com.example.primeravance.model.Restaurante
+import com.example.primeravance.model.ReviewRequest
 import com.example.primeravance.network.RetrofitClient
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -27,11 +33,13 @@ class MesasFragment : Fragment() {
     private var _binding: FragmentMesasBinding? = null
     private val binding get() = _binding!!
     
-    private lateinit var mesaAdapter: MesaAdapter
     private val calendar = Calendar.getInstance()
     
     private var restaurante: Restaurante? = null
+    private var mesasDisponibles: List<Mesa> = emptyList()
+    private var mesaSlots: List<MesaSlot> = emptyList()
     private var mesaSeleccionada: Mesa? = null
+    private lateinit var sessionManager: SessionManager
     
     // Horarios de reserva disponibles (10 AM - 10 PM)
     private val horariosDisponibles = listOf(
@@ -55,6 +63,7 @@ class MesasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMesasBinding.inflate(inflater, container, false)
+        sessionManager = SessionManager(requireContext())
         return binding.root
     }
 
@@ -69,33 +78,27 @@ class MesasFragment : Fragment() {
                 direccion = it.getString("restauranteDireccion", ""),
                 telefono = it.getString("restauranteTelefono", ""),
                 descripcion = it.getString("restauranteDescripcion") ,
-                imageRes = R.drawable.restaurante_pf
+                imageRes = R.drawable.restaurante_pf,
+                imagenUrl = it.getString("restauranteImagenUrl"),
+                miniaturaUrl = it.getString("restauranteMiniaturaUrl")
             )
         }
         
         setupUI()
-        setupRecyclerView()
+        prefillClientData()
         setupClickListeners()
         loadMesas()
     }
 
     private fun setupUI() {
         restaurante?.let {
-            binding.tvRestauranteNombre.text = it.nombre
+            val ratingInfo = if (it.ratingPromedio != null && it.totalResenas != null) {
+                "${'$'}{it.nombre} (${String.format(Locale.getDefault(), "%.1f", it.ratingPromedio)} ⭐ · ${it.totalResenas} reseñas)"
+            } else {
+                it.nombre
+            }
+            binding.tvRestauranteNombre.text = ratingInfo
             binding.tvRestauranteDireccion.text = it.direccion
-        }
-    }
-
-    private fun setupRecyclerView() {
-        mesaAdapter = MesaAdapter(emptyList()) { mesa ->
-            onMesaSelected(mesa)
-        }
-        
-        binding.rvMesas.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = mesaAdapter
-            setHasFixedSize(true)
-            itemAnimator = null // Desactivar animaciones que pueden causar parpadeos
         }
     }
 
@@ -106,6 +109,13 @@ class MesasFragment : Fragment() {
 
         binding.etHora.setOnClickListener {
             showTimePicker()
+        }
+
+        binding.btnSeleccionarMesa.setOnClickListener {
+            if (mesaSlots.isEmpty()) {
+                mesaSlots = buildMesaSlots(emptyList())
+            }
+            showMesaSelectionDialog()
         }
 
         // Validar cuando cambie el número de personas
@@ -135,6 +145,26 @@ class MesasFragment : Fragment() {
         }
     }
 
+    private fun prefillClientData() {
+        val user = sessionManager.getUser()
+        user?.let {
+            binding.etNombreCliente.setText(it.nombre)
+            binding.etNombreCliente.isEnabled = false
+            binding.etNombreCliente.alpha = 0.6f
+
+            binding.etEmailCliente.setText(it.email)
+            binding.etEmailCliente.isEnabled = false
+            binding.etEmailCliente.alpha = 0.6f
+
+            if (!it.telefono.isNullOrBlank()) {
+                binding.etTelefonoCliente.setText(it.telefono)
+            } else {
+                binding.etTelefonoCliente.setText("")
+                binding.etTelefonoCliente.hint = getString(R.string.ingresa_telefono_contacto)
+            }
+        }
+    }
+
     private fun loadMesas() {
         val restauranteId = restaurante?.id ?: return
         
@@ -148,12 +178,16 @@ class MesasFragment : Fragment() {
                 
                 if (response.isSuccessful && response.body() != null) {
                     val mesas = response.body()!!
-                    
-                    if (mesas.isEmpty()) {
+                    mesasDisponibles = mesas.take(15)
+                    mesaSlots = buildMesaSlots(mesasDisponibles)
+
+                    if (mesasDisponibles.isEmpty()) {
                         showEmptyState(true)
                     } else {
                         showEmptyState(false)
-                        mesaAdapter.updateMesas(mesas)
+                        binding.tvMesaSeleccionada.text = getString(R.string.mesa_no_seleccionada)
+                        mesaSeleccionada = null
+                        validateForm()
                     }
                 } else {
                     showEmptyState(true)
@@ -219,8 +253,10 @@ class MesasFragment : Fragment() {
                 
                 if (response.isSuccessful && response.body() != null) {
                     val mesas = response.body()!!
-                    
-                    if (mesas.isEmpty()) {
+                    mesasDisponibles = mesas.take(15)
+                    mesaSlots = buildMesaSlots(mesasDisponibles)
+
+                    if (mesasDisponibles.isEmpty()) {
                         showEmptyState(true)
                         Toast.makeText(
                             requireContext(),
@@ -229,7 +265,9 @@ class MesasFragment : Fragment() {
                         ).show()
                     } else {
                         showEmptyState(false)
-                        mesaAdapter.updateMesas(mesas)
+                        binding.tvMesaSeleccionada.text = getString(R.string.mesa_no_seleccionada)
+                        mesaSeleccionada = null
+                        validateForm()
                     }
                 } else {
                     Toast.makeText(
@@ -253,7 +291,91 @@ class MesasFragment : Fragment() {
 
     private fun onMesaSelected(mesa: Mesa) {
         mesaSeleccionada = mesa
+        binding.tvMesaSeleccionada.text = getString(
+            R.string.mesa_seleccionada_formato,
+            mesa.numeroMesa ?: mesa.numero.toString(),
+            mesa.capacidad
+        )
         validateForm()
+    }
+
+    /**
+     * Genera exactamente 15 espacios para el selector de mesas combinando mesas reales
+     * con placeholders visuales cuando el backend devuelve menos registros.
+     */
+    private fun buildMesaSlots(mesas: List<Mesa>): List<MesaSlot> {
+        val slots = mutableListOf<MesaSlot>()
+        val usedLabels = mutableSetOf<String>()
+        val limit = 15
+
+        mesas.take(limit).forEachIndexed { index, mesa ->
+            val label = when {
+                !mesa.numeroMesa.isNullOrBlank() -> mesa.numeroMesa!!
+                mesa.numero > 0 -> "M-${mesa.numero.toString().padStart(2, '0')}"
+                else -> "M-${(index + 1).toString().padStart(2, '0')}"
+            }
+            usedLabels.add(label)
+            slots.add(
+                MesaSlot(
+                    id = mesa.id,
+                    label = label,
+                    capacidad = mesa.capacidad,
+                    disponible = mesa.disponible && !mesa.ocupada,
+                    isPlaceholder = false,
+                    mesa = mesa
+                )
+            )
+        }
+
+        var placeholderIndex = 1
+        while (slots.size < limit) {
+            var label: String
+            do {
+                label = "M-${placeholderIndex.toString().padStart(2, '0')}"
+                placeholderIndex++
+            } while (usedLabels.contains(label))
+
+            usedLabels.add(label)
+            slots.add(
+                MesaSlot(
+                    id = -1000 - slots.size,
+                    label = label,
+                    capacidad = 0,
+                    disponible = false,
+                    isPlaceholder = true,
+                    mesa = null
+                )
+            )
+        }
+
+        return slots
+    }
+
+    private fun showMesaSelectionDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_select_mesa, null)
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.rvMesasGrid)
+        val btnCerrar = dialogView.findViewById<Button>(R.id.btnCerrar)
+
+        lateinit var dialog: AlertDialog
+
+        val adapter = MesaGridAdapter { mesa ->
+            onMesaSelected(mesa)
+            dialog.dismiss()
+        }
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+        recyclerView.setHasFixedSize(false)
+
+        val slots = if (mesaSlots.isEmpty()) buildMesaSlots(emptyList()) else mesaSlots
+        adapter.setMesas(slots, mesaSeleccionada?.id)
+
+        dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        btnCerrar.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
     }
 
     private fun showDatePicker() {
@@ -303,7 +425,7 @@ class MesasFragment : Fragment() {
         val fecha = binding.etFecha.text.toString()
         val hora = binding.etHora.text.toString()
         val numeroPersonas = binding.etNumeroPersonas.text.toString()
-        val mesaSeleccionada = mesaAdapter.getSelectedMesa()
+        val mesaSeleccionada = this.mesaSeleccionada
         
         val isValid = nombre.isNotEmpty() && 
                      telefono.isNotEmpty() &&
@@ -322,8 +444,8 @@ class MesasFragment : Fragment() {
         val emailCliente = binding.etEmailCliente.text.toString().trim()
         val fecha = binding.etFecha.text.toString()
         val horarioCompleto = binding.etHora.text.toString()
-        val numeroPersonas = binding.etNumeroPersonas.text.toString().toIntOrNull() ?: 0
-        val mesa = mesaAdapter.getSelectedMesa()
+    val numeroPersonas = binding.etNumeroPersonas.text.toString().toIntOrNull() ?: 0
+    val mesa = mesaSeleccionada
         
         if (mesa == null) {
             Toast.makeText(requireContext(), "Selecciona una mesa", Toast.LENGTH_SHORT).show()
@@ -373,7 +495,8 @@ class MesasFragment : Fragment() {
                     horaFin = "$horaFin:00",
                     numeroPersonas = numeroPersonas,
                     precio = 0.0,
-                    observaciones = "Reserva desde app móvil"
+                    observaciones = "Reserva desde app móvil",
+                    usuarioId = sessionManager.getUser()?.id
                 )
                 
                 val response = RetrofitClient.reservaApiService.crearReserva(request)
@@ -389,8 +512,12 @@ class MesasFragment : Fragment() {
                         Toast.LENGTH_LONG
                     ).show()
                     
-                    // Navegar a la pantalla de confirmación
-                    findNavController().navigate(R.id.navigation_notifications)
+                    val restauranteId = restaurante?.id
+                    if (restauranteId != null) {
+                        showReviewDialog(restauranteId)
+                    } else {
+                        navigateToNotifications()
+                    }
                 } else if (response.code() == 400) {
                     // Error 400: ya existe una reserva
                     val errorBody = response.errorBody()?.string() ?: "Error desconocido"
@@ -418,12 +545,105 @@ class MesasFragment : Fragment() {
         }
     }
 
+    private fun showReviewDialog(restauranteId: Int) {
+        val dialogBinding = DialogReviewBinding.inflate(LayoutInflater.from(requireContext()))
+        dialogBinding.tvReviewTitle.text = getString(R.string.review_dialog_title)
+        dialogBinding.tvReviewSubtitle.text = getString(
+            R.string.review_dialog_subtitle,
+            restaurante?.nombre ?: getString(R.string.app_name)
+        )
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+
+        dialogBinding.btnSkip.setOnClickListener {
+            dialog.dismiss()
+            navigateToNotifications()
+        }
+
+        dialogBinding.btnSubmit.setOnClickListener {
+            val rating = dialogBinding.ratingBar.rating
+            val comentario = dialogBinding.etComment.text.toString().trim()
+
+            if (rating == 0f) {
+                Toast.makeText(requireContext(), getString(R.string.review_dialog_rating_required), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            submitReview(restauranteId, rating, comentario, dialogBinding, dialog)
+        }
+
+        dialog.show()
+    }
+
+    private fun submitReview(
+        restauranteId: Int,
+        rating: Float,
+        comentario: String,
+        dialogBinding: DialogReviewBinding,
+        dialog: AlertDialog
+    ) {
+        val usuario = sessionManager.getUser()
+        if (usuario == null) {
+            Toast.makeText(requireContext(), getString(R.string.review_dialog_login_required), Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+            navigateToNotifications()
+            return
+        }
+
+        dialogBinding.btnSubmit.isEnabled = false
+        dialogBinding.btnSkip.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val request = ReviewRequest(
+                    restauranteId = restauranteId,
+                    usuarioId = usuario.id,
+                    comentario = comentario,
+                    rating = rating
+                )
+                val response = RetrofitClient.reviewApiService.submitReview(restauranteId, request)
+
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), getString(R.string.review_dialog_thanks), Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    navigateToNotifications()
+                } else {
+                    dialogBinding.btnSubmit.isEnabled = true
+                    dialogBinding.btnSkip.isEnabled = true
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.review_dialog_error_code, response.code()),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: Exception) {
+                dialogBinding.btnSubmit.isEnabled = true
+                dialogBinding.btnSkip.isEnabled = true
+                Toast.makeText(requireContext(), "Error: ${'$'}{e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun navigateToNotifications() {
+        findNavController().navigate(R.id.navigation_notifications)
+    }
+
     private fun showLoading(show: Boolean) {
         binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun showEmptyState(show: Boolean) {
         binding.layoutEmpty.visibility = if (show) View.VISIBLE else View.GONE
+        if (show) {
+            binding.tvMesaSeleccionada.text = getString(R.string.mesa_no_seleccionada)
+            mesaSeleccionada = null
+            mesasDisponibles = emptyList()
+            mesaSlots = buildMesaSlots(emptyList())
+            validateForm()
+        }
     }
 
     override fun onDestroyView() {

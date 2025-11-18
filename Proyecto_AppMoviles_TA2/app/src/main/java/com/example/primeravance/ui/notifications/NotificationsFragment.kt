@@ -11,18 +11,27 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.primeravance.R
 import com.example.primeravance.adapter.ReservaAdapter
+import com.example.primeravance.data.SessionManager
 import com.example.primeravance.databinding.FragmentNotificationsBinding
 import com.example.primeravance.model.Reserva
 import com.example.primeravance.network.RetrofitClient
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class NotificationsFragment : Fragment() {
 
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
     private lateinit var reservaAdapter: ReservaAdapter
+    private lateinit var sessionManager: SessionManager
+    private val allReservas = mutableListOf<Reserva>()
+    private var startDateMillis: Long? = null
+    private var endDateMillis: Long? = null
+    private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +39,7 @@ class NotificationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        sessionManager = SessionManager(requireContext())
         return binding.root
     }
 
@@ -38,6 +48,7 @@ class NotificationsFragment : Fragment() {
         
         setupRecyclerView()
         setupSwipeRefresh()
+        setupFilters()
         cargarReservas()
     }
 
@@ -67,6 +78,38 @@ class NotificationsFragment : Fragment() {
         )
     }
 
+    private fun setupFilters() {
+        binding.chipGroupEstado.setOnCheckedChangeListener { _, _ ->
+            aplicarFiltros()
+        }
+
+        binding.btnRangoFechas.setOnClickListener {
+            mostrarDateRangePicker()
+        }
+    }
+
+    private fun mostrarDateRangePicker() {
+        val picker = MaterialDatePicker.Builder.dateRangePicker()
+            .setTitleText("Selecciona rango de fechas")
+            .build()
+
+        picker.addOnPositiveButtonClickListener { selection ->
+            startDateMillis = selection.first
+            endDateMillis = selection.second
+            binding.btnRangoFechas.text = picker.headerText
+            aplicarFiltros()
+        }
+
+        picker.addOnNegativeButtonClickListener {
+            startDateMillis = null
+            endDateMillis = null
+            binding.btnRangoFechas.text = "Seleccionar rango de fechas"
+            aplicarFiltros()
+        }
+
+        picker.show(parentFragmentManager, "DateRangePicker")
+    }
+
     private fun cargarReservas() {
         // No mostrar ProgressBar si es refresh manual
         if (!binding.swipeRefreshLayout.isRefreshing) {
@@ -78,18 +121,23 @@ class NotificationsFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
+                val usuario = sessionManager.getUser()
+                if (usuario == null) {
+                    Toast.makeText(requireContext(), "Inicia sesión para ver tus reservas", Toast.LENGTH_SHORT).show()
+                    binding.layoutEmpty.visibility = View.VISIBLE
+                    return@launch
+                }
+
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitClient.reservaApiService.obtenerTodasReservas()
+                    RetrofitClient.reservaApiService.obtenerReservasPorUsuario(usuario.id)
                 }
 
                 if (response.isSuccessful) {
-                    val listaReservas = response.body() ?: emptyList()
-                    
-                    // Actualizar adapter
-                    reservaAdapter.updateReservas(listaReservas)
+                    allReservas.clear()
+                    allReservas.addAll(response.body() ?: emptyList())
+                    aplicarFiltros()
 
-                    // Mostrar estado apropiado
-                    if (listaReservas.isEmpty()) {
+                    if (allReservas.isEmpty()) {
                         binding.rvReservas.visibility = View.GONE
                         binding.layoutEmpty.visibility = View.VISIBLE
                     } else {
@@ -115,6 +163,49 @@ class NotificationsFragment : Fragment() {
                 binding.progressBar.visibility = View.GONE
                 binding.swipeRefreshLayout.isRefreshing = false
             }
+        }
+    }
+
+    private fun aplicarFiltros() {
+        var filtradas = allReservas.toList()
+
+        when (binding.chipGroupEstado.checkedChipId) {
+            binding.chipProximos.id -> {
+                filtradas = filtradas.filter { reserva ->
+                    isFutureReservation(reserva)
+                }
+            }
+            binding.chipPasados.id -> {
+                filtradas = filtradas.filter { !isFutureReservation(reserva = it) }
+            }
+            binding.chipCanceladas.id -> {
+                filtradas = filtradas.filter { it.estado.equals("CANCELADA", true) }
+            }
+        }
+
+        if (startDateMillis != null && endDateMillis != null) {
+            filtradas = filtradas.filter { reserva ->
+                val fecha = runCatching { dateFormatter.parse(reserva.fechaReserva)?.time }.getOrNull()
+                fecha != null && fecha in startDateMillis!!..endDateMillis!!
+            }
+        }
+
+        reservaAdapter.updateReservas(filtradas)
+
+        binding.layoutEmpty.visibility = if (filtradas.isEmpty()) View.VISIBLE else View.GONE
+        binding.rvReservas.visibility = if (filtradas.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    private fun isFutureReservation(reserva: Reserva): Boolean {
+        return try {
+            val fecha = dateFormatter.parse(reserva.fechaReserva)
+            val hora = reserva.horaInicio.substring(0, 5)
+            val dateTimeStr = "${'$'}{reserva.fechaReserva} ${'$'}hora"
+            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+            val dateTime = formatter.parse(dateTimeStr)
+            dateTime?.time ?: 0 > System.currentTimeMillis()
+        } catch (e: Exception) {
+            false
         }
     }
 
@@ -190,7 +281,7 @@ class NotificationsFragment : Fragment() {
                 
                 if (response.isSuccessful) {
                     // ✅ Actualización inmediata sin recargar toda la lista
-                    reservaAdapter.updateReserva(reservaId, nuevoEstado)
+                    actualizarReservaLocal(reservaId, nuevoEstado)
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -224,7 +315,14 @@ class NotificationsFragment : Fragment() {
                 // El backend devuelve código 200 con texto plano si es exitoso
                 if (response.isSuccessful) {
                     // ✅ Actualización inmediata sin recargar toda la lista
-                    reservaAdapter.updateReserva(reserva.id, "CANCELADA")
+                    actualizarReservaLocal(reserva.id, "CANCELADA")
+                    val mensaje = response.body()?.ifBlank { null }
+                        ?: getString(R.string.reservation_cancel_success)
+                    Toast.makeText(
+                        requireContext(),
+                        mensaje,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -240,6 +338,17 @@ class NotificationsFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
+    }
+
+    private fun actualizarReservaLocal(reservaId: Int, nuevoEstado: String) {
+        val index = allReservas.indexOfFirst { it.id == reservaId }
+        if (index != -1) {
+            val copia = allReservas[index].copy(estado = nuevoEstado)
+            allReservas[index] = copia
+            aplicarFiltros()
+        } else {
+            reservaAdapter.updateReserva(reservaId, nuevoEstado)
         }
     }
 

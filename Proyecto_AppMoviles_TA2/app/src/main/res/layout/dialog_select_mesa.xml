@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="20dp">
+
+	<TextView
+		android:id="@+id/tvDialogTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/mesa_dialog_title"
+		android:textSize="20sp"
+		android:textStyle="bold" />
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/mesa_dialog_subtitle"
+		android:textColor="@color/gray_dark"
+		android:layout_marginTop="4dp"
+		android:textSize="14sp" />
+
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/rvMesasGrid"
+		android:layout_width="match_parent"
+		android:layout_height="320dp"
+		android:layout_marginTop="16dp"
+		android:clipToPadding="false"
+		android:nestedScrollingEnabled="false"
+		android:overScrollMode="never"
+		android:padding="4dp"
+		android:scrollbars="vertical" />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="center"
+		android:layout_marginTop="12dp">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			android:paddingEnd="16dp">
+
+			<View
+				android:layout_width="12dp"
+				android:layout_height="12dp"
+				android:layout_marginEnd="6dp"
+				android:background="@drawable/circle_shape"
+				android:backgroundTint="@color/green_primary" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/mesa_estado_disponible"
+				android:textColor="@color/text_primary"
+				android:textSize="12sp" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="center_vertical">
+
+			<View
+				android:layout_width="12dp"
+				android:layout_height="12dp"
+				android:layout_marginEnd="6dp"
+				android:background="@drawable/circle_shape"
+				android:backgroundTint="@color/red_light" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/mesa_estado_ocupada"
+				android:textColor="@color/text_primary"
+				android:textSize="12sp" />
+		</LinearLayout>
+	</LinearLayout>
+
+	<Button
+		android:id="@+id/btnCerrar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/mesa_dialog_close"
+		android:layout_marginTop="16dp" />
+
+</LinearLayout>

@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.primeravance.R
+import com.example.primeravance.data.SessionManager
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.PlayerView
@@ -31,7 +32,9 @@ class WelcomeFragment : Fragment() {
 
         val btnInicio = view.findViewById<Button>(R.id.btnInicio)
         btnInicio.setOnClickListener {
-            findNavController().navigate(R.id.loginFragment)
+            val sessionManager = SessionManager(requireContext())
+            val destino = if (sessionManager.isRegistered()) R.id.loginFragment else R.id.registerFragment
+            findNavController().navigate(destino)
         }
 
         // Inicializar ExoPlayer

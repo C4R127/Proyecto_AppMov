@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.primeravance.R
+import com.example.primeravance.data.SessionManager
 import com.example.primeravance.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private var sessionManager: SessionManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,11 +23,15 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        sessionManager = SessionManager(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sessionManager?.getUser()?.let {
+            binding.tvBienvenida.text = getString(R.string.home_saludo, it.nombre)
+        }
         setupClickListeners()
     }
 
@@ -37,6 +43,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnCerrarSesion.setOnClickListener {
+            sessionManager?.clearSession()
             findNavController().navigate(R.id.loginFragment)
         }
 
@@ -48,5 +55,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        sessionManager = null
     }
 }

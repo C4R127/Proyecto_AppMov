@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.primeravance.R
+import com.example.primeravance.data.SessionManager
 import com.example.primeravance.databinding.FragmentLoginBinding
 import com.example.primeravance.model.LoginRequest
 import com.example.primeravance.network.RetrofitClient
@@ -18,6 +19,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private var sessionManager: SessionManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,12 +27,16 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        sessionManager = SessionManager(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+        if (sessionManager?.isLoggedIn() == true && sessionManager?.getUser() != null) {
+            findNavController().navigate(R.id.navigation_home)
+            return
+        }
         setupClickListeners()
     }
 
@@ -44,11 +50,11 @@ class LoginFragment : Fragment() {
         }
 
         binding.tvOlvidasteContrasenia.setOnClickListener {
-            Toast.makeText(requireContext(), "Forgot Password clicked", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.forgotPasswordFragment)
         }
 
         binding.tvRegistrar.setOnClickListener {
-            Toast.makeText(requireContext(), "Signup clicked", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.registerFragment)
         }
     }
 
@@ -77,6 +83,9 @@ class LoginFragment : Fragment() {
                     val loginResponse = response.body()!!
                     
                     if (loginResponse.success) {
+                        sessionManager?.setRegistered(true)
+                        sessionManager?.setLoggedIn(true)
+                        loginResponse.usuario?.let { sessionManager?.saveUser(it) }
                         Toast.makeText(
                             requireContext(),
                             "Login exitoso! Bienvenido ${loginResponse.usuario?.nombre ?: ""}",
@@ -125,5 +134,6 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        sessionManager = null
     }
 }

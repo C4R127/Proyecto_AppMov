@@ -95,6 +95,8 @@ class DashboardFragment : Fragment() {
             putString("restauranteDireccion", restaurante.direccion)
             putString("restauranteTelefono", restaurante.telefono)
             putString("restauranteDescripcion", restaurante.descripcion)
+            putString("restauranteImagenUrl", restaurante.imagenUrl)
+            putString("restauranteMiniaturaUrl", restaurante.miniaturaUrl)
         }
         
         findNavController().navigate(R.id.action_dashboard_to_mesas, bundle)

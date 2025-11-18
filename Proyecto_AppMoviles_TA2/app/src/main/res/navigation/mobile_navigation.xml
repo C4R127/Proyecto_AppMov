@@ -3,7 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/loginFragment">
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.primeravance.ui.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash" />
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.primeravance.ui.auth.RegisterFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
     <!-- Login Fragment -->
     <fragment
@@ -17,6 +33,12 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.primeravance.ui.auth.ForgotPasswordFragment"
+        android:label="Recuperar contraseña"
+        tools:layout="@layout/fragment_forgot_password" />
 
     <!-- Main Tab Fragments -->
     <fragment
@@ -63,6 +85,12 @@
         android:name="com.example.primeravance.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.primeravance.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
 
     <!-- Welcome Fragment (for future use) -->
     <fragment

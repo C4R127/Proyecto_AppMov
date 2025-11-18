@@ -6,5 +6,9 @@ data class Restaurante(
     val direccion: String,
     val telefono: String,
     val descripcion: String?,
-    val imageRes: Int = 0
+    val imageRes: Int = 0,
+    val imagenUrl: String? = null,
+    val miniaturaUrl: String? = null,
+    val ratingPromedio: Double? = null,
+    val totalResenas: Int? = null
 )

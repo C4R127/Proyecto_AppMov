@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">PrimerAvance</string>
     <string name="title_home">Inicio</string>
-    <string name="title_dashboard">Reserva</string>
-    <string name="title_notifications">Estado</string>
+    <string name="title_dashboard">Restaurantes</string>
+    <string name="title_notifications">Reservas</string>
+    <string name="title_profile">Perfil</string>
     <string name="title_welcome">Guia</string>
     
     <!-- Login Screen -->
@@ -20,6 +21,16 @@
     <string name="welcome_subtitle">to our store</string>
     <string name="welcome_description">Get your groceries in as fast as one hour</string>
     <string name="get_started">Get Started</string>
+
+    <string name="home_saludo">Hola %1$s</string>
+    <string name="filtro_todos">Todos</string>
+    <string name="filtro_proximos">Próximas</string>
+    <string name="filtro_pasadas">Pasadas</string>
+    <string name="filtro_canceladas">Canceladas</string>
+
+    <string name="label_rango_fechas">Rango de fechas</string>
+    <string name="label_estado">Estado</string>
+    <string name="ingresa_telefono_contacto">Teléfono de contacto para la reserva</string>
     
     <!-- Store Screen -->
     <string name="find_products">Find Products</string>
@@ -27,6 +38,17 @@
     <string name="fresh_fruits_vegetables">Fresh Fruits\n&amp; Vegetable</string>
     <string name="meat_fish">Meat &amp; Fish</string>
     <string name="dairy_eggs">Dairy &amp; Eggs</string>
+
+    <!-- Review Dialog -->
+    <string name="review_dialog_title">¿Cómo estuvo tu visita?</string>
+    <string name="review_dialog_subtitle">Cuéntanos cómo te fue en %1$s</string>
+    <string name="review_dialog_hint">Escribe un comentario (opcional)</string>
+    <string name="review_dialog_skip">Después</string>
+    <string name="review_dialog_submit">Enviar reseña</string>
+    <string name="review_dialog_rating_required">Selecciona una puntuación para continuar</string>
+    <string name="review_dialog_login_required">Inicia sesión para compartir tu reseña</string>
+    <string name="review_dialog_thanks">¡Gracias por tu reseña!</string>
+    <string name="review_dialog_error_code">Error al enviar reseña (%1$d)</string>
     
     <!-- Bottom Navigation -->
     <string name="shop">Shop</string>
@@ -39,4 +61,32 @@
     <string name="mesa_icon">Ícono de mesa</string>
     <string name="restaurant_logo">Logo del restaurante</string>
     <string name="restaurant_image">Imagen del restaurante</string>
+
+    <!-- Mesa selection dialog -->
+    <string name="mesa_dialog_title">Selecciona una mesa</string>
+    <string name="mesa_dialog_subtitle">Máximo 15 mesas por restaurante</string>
+    <string name="mesa_dialog_close">Cerrar</string>
+    <string name="mesa_no_seleccionada">Ninguna mesa seleccionada</string>
+    <string name="mesa_seleccionada_formato">Mesa %1$s (capacidad %2$d)</string>
+    <string name="mesa_button_select">Elegir mesa</string>
+    <string name="mesa_estado_disponible">Disponible</string>
+    <string name="mesa_estado_ocupada">Ocupada</string>
+    <string name="mesa_dialog_waiting_data">Selecciona fecha y hora para visualizar las mesas</string>
+    <string name="mesa_capacidad_placeholder">Sin información</string>
+    <string name="mesa_capacidad_formato">%1$d personas</string>
+
+    <!-- Perfil -->
+    <string name="perfil_edit_info">Editar información del usuario</string>
+    <string name="perfil_nombre_hint">Nombre completo</string>
+    <string name="perfil_email_hint">Correo electrónico</string>
+    <string name="perfil_telefono_hint">Número telefónico</string>
+    <string name="perfil_guardar_cambios">Guardar cambios</string>
+    <string name="perfil_actualizado">Información actualizada</string>
+    <string name="perfil_error_nombre">Ingresa un nombre válido</string>
+    <string name="perfil_error_email">Ingresa un correo válido</string>
+    <string name="perfil_error_telefono">Ingresa un teléfono válido</string>
+    <string name="perfil_telefono_label">Teléfono</string>
+
+    <!-- Reservas -->
+    <string name="reservation_cancel_success">Reserva cancelada exitosamente</string>
 </resources>

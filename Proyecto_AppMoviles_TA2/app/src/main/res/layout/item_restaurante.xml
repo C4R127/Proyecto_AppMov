@@ -16,32 +16,41 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Icono y Nombre del Restaurante -->
-        <LinearLayout
+        <!-- Imagen y Nombre del Restaurante -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginBottom="8dp">
-
 
             <ImageView
                 android:id="@+id/imgRestaurante"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/restaurante_pf" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/restaurant_image"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintDimensionRatio="4:3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvRestauranteNombre" />
 
             <TextView
                 android:id="@+id/tvRestauranteNombre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginStart="16dp"
                 android:text="Nombre Restaurante"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
-        </LinearLayout>
+                android:textColor="@color/text_primary"
+                app:layout_constraintStart_toEndOf="@id/imgRestaurante"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Dirección -->
         <LinearLayout
@@ -102,6 +111,28 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:layout_marginTop="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@android:drawable/btn_star_big_on"
+                app:tint="@color/green_primary"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/tvRestauranteRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4.8 (120 reseñas)"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
 
     </LinearLayout>
 

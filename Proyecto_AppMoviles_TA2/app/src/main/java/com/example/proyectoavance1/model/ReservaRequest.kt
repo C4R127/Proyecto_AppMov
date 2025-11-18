@@ -10,5 +10,6 @@ data class ReservaRequest(
     val horaFin: String,             // Formato: "HH:mm:ss"
     val numeroPersonas: Int,
     val precio: Double? = 0.0,
-    val observaciones: String? = null
+    val observaciones: String? = null,
+    val usuarioId: Int? = null
 )

@@ -30,6 +30,9 @@ interface ReservaApiService {
     @GET("api/reservas")
     suspend fun obtenerTodasReservas(): Response<List<Reserva>>
     
+    @GET("api/reservas/usuario/{usuarioId}")
+    suspend fun obtenerReservasPorUsuario(@Path("usuarioId") usuarioId: Int): Response<List<Reserva>>
+
     // Obtener reservas por mesa
     @GET("api/reservas/mesa/{mesaId}")
     suspend fun obtenerReservasPorMesa(@Path("mesaId") mesaId: Int): Response<List<Reserva>>
