@@ -318,6 +318,13 @@ mvnw.cmd spring-boot:run
 
 La aplicación estará disponible en: **`http://localhost:8080`**
 
+### Exponer el backend para dispositivos móviles
+- El servidor ya está configurado para escuchar en `0.0.0.0:8080`, así que cualquier dispositivo de tu red puede alcanzarlo.
+- Abre el puerto 8080 en el firewall del sistema operativo (y en el router, si usarás otra subred).
+- Las APIs tienen `@CrossOrigin(origins = "*")`; mantén CORS abierto o restringido a la IP/host de tu app.
+- Si continúas con HTTP plano, asegúrate de que la app Android tenga `usesCleartextTraffic="true"`. Para producción, expón HTTPS con un certificado válido.
+- Cada vez que cambies la IP o el puerto del backend, actualiza el valor de `BuildConfig.BASE_URL` en tu módulo móvil (o muévelo a un archivo `.properties`/flavor para automatizarlo).
+
 ## Probar la API
 
 Puedes usar herramientas como:
